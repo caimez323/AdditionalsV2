@@ -21,6 +21,7 @@ Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS = Isaac.GetCostumeIdByPath("gfx/cha
 
 --Reset some variables now
 local DJrestart = false
+local Zodiac_C = 0
 local Zodiac_T = false
 local Zodiac_TBS = false
 local Zodiac_TBF = false
@@ -29,7 +30,6 @@ local AlreadyGaveLaserDrone = false
 local AlreadyDemon = false
 local AlreadyGrail =false
 local AlreadyCursedGrail =false
-local Zodiac_C = 0
 local max = 0
 local timeA =0
 local timeB=0
@@ -129,8 +129,8 @@ Additionals:AddCallback(ModCallbacks.MC_GET_CARD, Additionals.getCard);
 function Additionals:onUpdate(player)
 local game = Game()
   if (game:GetFrameCount() == 1 )then
-    Zodiac_TBS = false
-    Zodiac_TBF = false
+    Zodiac_T=false
+    Zodiac_C = 0
     HasWhiteFlower = false
     HasDemonRing = false
     AlreadyDemon = false
@@ -142,24 +142,18 @@ local game = Game()
     GTNoDMG = true
     rangeBoost=0
     WzBoss = false
-    local vel = Vector(0,0)
-    local player = Isaac.GetPlayer(0)
     --Reset items that have an already
     timeA = 0
     timeB = 0
     AlreadyStart = false
     AlreadyBothGrail = false
-    Zodiac_T=false
-    Zodiac_C = 0
-    Zodiac_TBF = false
     AlreadyGaveFrozen = false
     AlreadyGaveLaserDrone = false
-    Zodiac_TBS = false
     AlreadyProteins = false
     AlreadyDemon = false
     AlreadyGrail =false
     AlreadyCursedGrail =false
-    if not DJrestart then
+    if not DJrestart then -- When we leave the run
       Zodiac_T=false
       Zodiac_C = 0
       HasAR=false
@@ -238,7 +232,7 @@ __eidItemDescriptions[Wind] = "Freezes and burns all enemies in the room#Adds ha
 --This function is called when the player's stats need to be changed
 --The CacheFlag stats is changed as long as the player has the item
 --Careful with cacheFlag/CacheFlag
-function Additionals:onUpdatee(player,cacheFlag)
+function Additionals:onEvaluateItems(player,cacheFlag)
     local vel = Vector(0,0)
     local game = Game()
     local level= game:GetLevel()
@@ -394,7 +388,7 @@ function Additionals:onUpdatee(player,cacheFlag)
 --Transformation Ophiuscus
 --The transformation's stat is updated here !!!! Update to think to check if the player has already the bonus instead of checking if he has the transformation
     if cacheFlag == CacheFlag.CACHE_SPEED then
-      if (Zodiac_T and not Zodiac_TBS) then
+      if (Zodiac_T and not Zodiac_TBS) then -- If we just transform and the stats has not been given
         --Player has Zodiac movement speed
         player.MoveSpeed = player.MoveSpeed + 0.35
         Zodiac_TBS = true
@@ -408,15 +402,14 @@ function Additionals:onUpdatee(player,cacheFlag)
         SFXManager():Play(SoundEffect.SOUND_POWERUP_SPEWER, 0.9, 0, false, 1)
         local hud = Game():GetHUD()
         Isaac.ExecuteCommand("goto s.planetarium")
-        hud:ShowItemText("Ophiuscus","", false)
+        hud:ShowItemText("Ophiuscus !","", false)
         --player:AddNullCostume(Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS)
         Zodiac_TBF = true
+        
       end
     end
     
-    
   --Give And Take
-  
   if player:HasCollectible(GiveTakeID) then
     if cacheFlag == CacheFlag.CACHE_FIREDELAY then
       player.MaxFireDelay = player.MaxFireDelay +0.75
@@ -436,7 +429,7 @@ function Additionals:onUpdatee(player,cacheFlag)
     end
   end
 end
-Additionals:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, Additionals.onUpdatee)
+Additionals:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, Additionals.onEvaluateItems)
 
 --This function is called each 0.5s and focus on the tearUpdate
 function Additionals:tearUpdate(player)
@@ -788,11 +781,13 @@ function Additionals:Transform()
     HasP = true
     Zodiac_C = Zodiac_C+1
   end
-  --If he has enough add transformation, hearts, and revaluate to give stats
-  if Zodiac_C >= 3 and not Zodiac_T then 
+  --If he had enough add transformation, hearts, and revaluate to give stats
+  if Zodiac_C >= 3 and not Zodiac_T then --Not transformed yet
     player:AddCacheFlags(CacheFlag.CACHE_SPEED)
+    player:AddCacheFlags(CacheFlag.CACHE_FLYING)
     Zodiac_T = true
-    Zodiac_C = 0
+    Zodiac_TBS = false
+    Zodiac_TBF = false
     player:EvaluateItems()
   end
 end
