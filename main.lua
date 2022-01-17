@@ -17,6 +17,7 @@ local Additionals = RegisterMod("AdditionalsV2",1)
 --Set the costumes
 Additionals.COSTUME_DEMON_RING= Isaac.GetCostumeIdByPath("gfx/characters/demon_ring.anm2")
 Additionals.COSTUME_WHITE_FLOWER= Isaac.GetCostumeIdByPath("gfx/characters/white_flower.anm2")
+Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS = Isaac.GetCostumeIdByPath("gfx/characters/transformation_ophiuscus.anm2")
 
 --Reset some variables now
 local DJrestart = false
@@ -410,6 +411,7 @@ function Additionals:onUpdatee(player,cacheFlag)
         local hud = Game():GetHUD()
         Isaac.ExecuteCommand("goto s.planetarium")
         hud:ShowItemText("Ophiuscus","", false)
+        --player:AddNullCostume(Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS)
         Zodiac_TBF = true
       end
     end
