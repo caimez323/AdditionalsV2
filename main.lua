@@ -128,7 +128,6 @@ Additionals:AddCallback(ModCallbacks.MC_GET_CARD, Additionals.getCard);
 --This function is called each 0.5s
 function Additionals:onUpdate(player)
 local game = Game()
---Isaac.RenderText(game:GetFrameCount(),100,100,100,1,1,1)
   if (game:GetFrameCount() == 1 )then
     Zodiac_TBS = false
     Zodiac_TBF = false
@@ -156,13 +155,11 @@ local game = Game()
     AlreadyGaveFrozen = false
     AlreadyGaveLaserDrone = false
     Zodiac_TBS = false
-    CountMore = -1
     AlreadyProteins = false
     AlreadyDemon = false
     AlreadyGrail =false
     AlreadyCursedGrail =false
     if not DJrestart then
-      CountMore=-1
       Zodiac_T=false
       Zodiac_C = 0
       HasAR=false
@@ -194,6 +191,7 @@ local game = Game()
   end
   
   
+  --A fix for adding wisp when use The fly-verter without soul hearts
   if player:HasCollectible(584) and Afterflyver and player:HasCollectible(flyverterId) then
       local entwisp = Isaac.FindByType(3,206,-1)
       if #entwisp>0 then
