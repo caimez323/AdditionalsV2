@@ -565,28 +565,21 @@ function Additionals:tearUpdate(player)
           end
         end
       end
-      
+    end
     --Doom Stars
-    
-    if player:HasCollectible(DivineGrailId) and (player:HasCollectible(CursedGrailId)) then
+    if player:HasCollectible(DivineGrailId) and player:HasCollectible(CursedGrailId) then
       for _, entity in pairs(Isaac.GetRoomEntities()) do
-        Isaac.ConsoleOutput("e")
         if entity.Type == EntityType.ENTITY_TEAR and entity.SpawnerType == EntityType.ENTITY_PLAYER then
           local tear = entity:ToTear()
           if entity.Variant~=TearVariant.DOOM_STARS then
             tear:ChangeVariant(TearVariant.DOOM_STARS)
-            tear:SetSize(tear.Size, Vector(1.2,1.2), 8)
-            tear.SpriteScale = tear.SpriteScale * 1.2
+            tear:SetSize(tear.Size, Vector(1.2,1.2), 6)
+            tear.SpriteScale = tear.SpriteScale * 1
           end
         end
       end
     end
-      
-      
-      
-      
-      
-    end
+    
 end
 Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE,Additionals.tearUpdate)
 
