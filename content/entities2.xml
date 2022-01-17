@@ -1,0 +1,21 @@
+<entities anm2root="gfx/" version="5">
+		<entity anm2path="frozen_body.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" name="frozenbody" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="530">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+  <entity anm2path="laser_drone.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" name="LaserDrone" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="531">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+  
+  <entity anm2path="stars_tears.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Stars" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="7583">
+    <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+  </entity>
+  
+    <entity anm2path="dark_stars_tears.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Dark_Stars" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="7584">
+    <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    
+    <entity anm2path="doom_stars_tears.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Doom_Stars" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="7585">
+    <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+  </entity>
+  
+</entities>  
