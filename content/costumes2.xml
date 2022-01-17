@@ -1,5 +1,5 @@
 <costumes anm2root="gfx/characters/">
   <costume anm2path="white_flower.anm2" type="none" />
   <costume anm2path="demon_ring.anm2" type="none" />
-  <costume anm2path="transformation_ophiuscus.anm2" type="non" />
+  <costume anm2path="transformation_ophiuscus.anm2" type="none" />
 </costumes>
