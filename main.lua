@@ -403,7 +403,7 @@ function Additionals:onEvaluateItems(player,cacheFlag)
         local hud = Game():GetHUD()
         Isaac.ExecuteCommand("goto s.planetarium")
         hud:ShowItemText("Ophiuscus !","", false)
-        --player:AddNullCostume(Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS)
+        player:AddNullCostume(Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS)
         Zodiac_TBF = true
         
       end

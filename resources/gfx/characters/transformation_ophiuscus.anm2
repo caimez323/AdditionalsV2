@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="robot" CreatedOn="17/01/2022 19:24:57" Version="105" Fps="30"/>
+	<Info CreatedBy="robot" CreatedOn="17/01/2022 23:42:56" Version="106" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="costume\transformation_ophiuscus.png" Id="0"/>
