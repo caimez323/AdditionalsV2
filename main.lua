@@ -74,6 +74,8 @@ local DivineGrailId = Isaac.GetItemIdByName("Divine Grail")
 local flyverterId = Isaac.GetItemIdByName("The Fly-verter")
 local CursedGrailId = Isaac.GetItemIdByName("Cursed Grail")
 local GiveTakeID = Isaac.GetItemIdByName("Give And Take")
+local SoulStealerID = Isaac.GetItemIdByName("Soul Stealer")
+
 
 local BiKeeperId= Isaac.GetCardIdByName("BiKeeper")
 local SecretId = Isaac.GetCardIdByName("Secret Passage")
