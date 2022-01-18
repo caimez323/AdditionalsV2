@@ -54,6 +54,7 @@ local FrozenItemId = Isaac.GetItemIdByName("Frozen Body")
 local variant = Isaac.GetEntityVariantByName("frozenbody")
 local variant1 = Isaac.GetEntityVariantByName("LaserDrone")
 local LaserDroneID = Isaac.GetItemIdByName("Laser Drone")
+local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom")
 
 
 local Proteins = Isaac.GetItemIdByName("Proteins")
@@ -229,6 +230,7 @@ __eidItemDescriptions[CursedGrailId] = "Add a 1.5* damage multiplier, +1 damage,
 __eidItemDescriptions[GiveTakeID] = "Stats down but each time you clear a room without taking damage, has a chance to give you a stat up#Chances of getting a bonus increase the deeper you are"
 __eidItemDescriptions[LaserDroneID] = "Spawns a familiar that bounces and shoots lasers#Its damage, speed, and fire rate are based on the number of pickups in the room"
 __eidItemDescriptions[Wind] = "Freezes and burns all enemies in the room#Adds half a soulheart"
+__eidItemDescriptions[SoulStealerID] = "Shoot a fire that deal damage to enemies.#If it kills the enemy, add a permanent familiar"
 
 
 --This function is called when the player's stats need to be changed
