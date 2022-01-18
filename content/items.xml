@@ -12,7 +12,7 @@
   <passive  quality="4" cache="damage shotspeed firedelay" description="What have you done !" name="Cursed Grail" gfx="cursed_grail.png" devilprice="3" blackhearts = "2" special="true"/>
   <passive  quality="2" cache="speed firedelay" description="I want to be the fast !" name="Darts" gfx="darts.png"/>
   <passive  quality="3" cache="damage shotspeed luck firedelay" description="High risk high reward" name="Give And Take" gfx="give_and_take.png" devilprice="1"/>
-	<familiar  quality="2" description="It's freezing !" gfx="Collectibles_frozen_body.png"  name="Frozen Body" cache ="familiars" soulhearts="4"/>
+	<familiar  quality="2" description="It's freezing !" gfx="Collectibles_frozen_body.png"  name="Frozen Body" cache ="familiars" soulhearts="2"/>
 	<familiar  quality="1" description="He's excited ! Bzzt !" gfx="Collectibles_laser_drone.png"  name="Laser Drone" cache ="familiars"/>
 	<active  quality="2" maxcharges ="5" description="Ice cube on demand" gfx="Freezy_Wind.png" name="Freezy Wind"/>
   <active  quality="2" maxcharges ="4" descritpion="FIRE !" gfx="matches.png" name="Matches" />
