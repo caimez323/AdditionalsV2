@@ -54,7 +54,7 @@ local FrozenItemId = Isaac.GetItemIdByName("Frozen Body")
 local variant = Isaac.GetEntityVariantByName("frozenbody")
 local variant1 = Isaac.GetEntityVariantByName("LaserDrone")
 local LaserDroneID = Isaac.GetItemIdByName("Laser Drone")
-local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom")
+
 
 
 local Proteins = Isaac.GetItemIdByName("Proteins")
@@ -75,7 +75,7 @@ local DivineGrailId = Isaac.GetItemIdByName("Divine Grail")
 local flyverterId = Isaac.GetItemIdByName("The Fly-verter")
 local CursedGrailId = Isaac.GetItemIdByName("Cursed Grail")
 local GiveTakeID = Isaac.GetItemIdByName("Give And Take")
-local SoulStealerID = Isaac.GetItemIdByName("Soul Stealer")
+
 
 
 local BiKeeperId= Isaac.GetCardIdByName("BiKeeper")
@@ -890,6 +890,8 @@ function Additionals:use_Trans()
   --Count and add dmg as max
   player.Damage  = player.Damage + (max)
 end
+
+Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_Trans, TransfusionId)
 --When need to reset the Dmg while entering in new room and reset max
 --I also reset the timer for Matches since it's the same CallBack
 function Additionals:newRoom()
@@ -915,7 +917,7 @@ function Additionals:newRoom()
     end
   end
 end
-Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_Trans, TransfusionId)
+
 Additionals:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,Additionals.newRoom)
 
 --Fly-Verter
@@ -1010,6 +1012,29 @@ function Additionals:use_flyverter()
 
 end
 Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_flyverter, flyverterId)
+
+
+local S_Stealer = {
+ Active = false,
+ Direction = Direction.NO_DIRECTION
+ DirectionStart = 1,
+ EntityVariant = Isaac.GetEntityVariantByName("Soul Stealer")
+ 
+}
+
+local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom")
+local SoulStealerID = Isaac.GetItemIdByName("Soul Stealer")
+
+function Additionals:use_soul_stealer()
+  
+  player:AnimateCollectible(SoulStealerID, "UseItem", "PlayerPickup")
+  
+  
+end
+Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_soul_stealer, SoulStealerID)
+
+
+
 
 
 Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, entity, Amount, Flag, Source, Countdown)
