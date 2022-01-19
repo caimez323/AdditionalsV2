@@ -75,6 +75,7 @@ local DivineGrailId = Isaac.GetItemIdByName("Divine Grail")
 local flyverterId = Isaac.GetItemIdByName("The Fly-verter")
 local CursedGrailId = Isaac.GetItemIdByName("Cursed Grail")
 local GiveTakeID = Isaac.GetItemIdByName("Give And Take")
+local SoulStealerID = Isaac.GetItemIdByName("Soul Stealer") -- soul stealer item
 
 
 
@@ -1015,7 +1016,7 @@ Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_flyverter, flyv
 
 
 local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom") -- phantom entity
-local SoulStealerID = Isaac.GetItemIdByName("Soul Stealer") -- soul stealer item
+
 
 local S_Stealer = {
  Active = false,
@@ -1035,14 +1036,14 @@ local PickupTail = {
   
   }
 
-function Additionals:soul_stealer_update()
+function Additionals:soul_stealer_update(player)
   
   if S_Stealer.Active then --If the item is active
     if player:GetShootingJoystick():Length() > 0.1 then --If the fire key is pressed, fire
       S_Stealer.Active = false
       S_Stealer.Entity:Remove()
       player:StopExtraAnimation()
-      S_Stealer.Flame = Isaac.Spawn(EntityType.ENTITY_EFFECT, 144,0, player.Position, player:GetShootingJoystick():       Normalized()*14 + player.Velocity, player):ToEffect()
+      S_Stealer.Flame = Isaac.Spawn(EntityType.ENTITY_EFFECT, 10,0, player.Position, player:GetShootingJoystick():       Normalized()*14 + player.Velocity, player):ToEffect()
       --144 EnemyGhost
       --10 Blue flame
       --52 Red flame
@@ -1055,17 +1056,12 @@ function Additionals:soul_stealer_update()
       or CurrentFrame > S_Stealer.DirectionStart +20 --Time pass
       or CurrentDirection == Direction.NO_DIRECTION --Change direction
       then -- We need to refresh the animation
-        player:PlayExtraAnimation("Pickup" ..PickupTail[])
+        player:PlayExtraAnimation("Pickup" ..PickupTail[CurrentDirection])
         S_Stealer.DirectionStart = CurrentFrame
         S_Stealer.Direction = CurrentDirection
       end
       S_Stealer.Entity.Position = player.Position + Vector(0,1)
     end
-    
-    
-    
-    
-    
   end
   
   if S_Stealer.Flame ~= nil then --The flame isn't here
@@ -1077,8 +1073,11 @@ end
 Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE,Additionals.soul_stealer_update)
 
 function Additionals:use_soul_stealer()
-  
-  player:AnimateCollectible(SoulStealerID, "UseItem", "PlayerPickup")
+  S_Stealer.Active =  true
+  local player = Isaac.GetPlayer(0)
+  --Isaac.Spawn(EntityType.ENTITY_EFFECT,S_Stealer.EntityVariant,0,player.Position,Vector(0,0), player)
+  S_Stealer.Entity = Isaac.Spawn(EntityType.ENTITY_EFFECT,S_Stealer.EntityVariant,0,player.Position,Vector(0,0), player)
+  --player:AnimateCollectible(SoulStealerID, "UseItem", "PlayerPickup")
   
   
 end
