@@ -11,7 +11,7 @@
 
 --Settings for the mod
 local Additionals = RegisterMod("AdditionalsV2",1)
-
+local game = Game()
 
 
 --Set the costumes
@@ -1014,16 +1014,67 @@ end
 Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_flyverter, flyverterId)
 
 
+local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom") -- phantom entity
+local SoulStealerID = Isaac.GetItemIdByName("Soul Stealer") -- soul stealer item
+
 local S_Stealer = {
  Active = false,
- Direction = Direction.NO_DIRECTION
+ Direction = Direction.NO_DIRECTION,
  DirectionStart = 1,
- EntityVariant = Isaac.GetEntityVariantByName("Soul Stealer")
- 
+ EntityVariant = Isaac.GetEntityVariantByName("Soul Stealer"), -- Soul Stealer entity
+ Flame = nil,
+ Entity = nil
 }
 
-local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom")
-local SoulStealerID = Isaac.GetItemIdByName("Soul Stealer")
+local PickupTail = {
+  [Direction.NO_DIRECTION] = "WalkDown",
+  [Direction.LEFT] = "WalkLeft",
+  [Direction.UP] = "WalkUp",
+  [Direction.RIGHT] = "WalkRight",
+  [Direction.DOWN] = "WalkDown",
+  
+  }
+
+function Additionals:soul_stealer_update()
+  
+  if S_Stealer.Active then --If the item is active
+    if player:GetShootingJoystick():Length() > 0.1 then --If the fire key is pressed, fire
+      S_Stealer.Active = false
+      S_Stealer.Entity:Remove()
+      player:StopExtraAnimation()
+      S_Stealer.Flame = Isaac.Spawn(EntityType.ENTITY_EFFECT, 144,0, player.Position, player:GetShootingJoystick():       Normalized()*14 + player.Velocity, player):ToEffect()
+      --144 EnemyGhost
+      --10 Blue flame
+      --52 Red flame
+      
+      S_Stealer.Flame:SetTimeout(60)
+    else -- Walking
+      local CurrentDirection= player:GetMovementDirection()
+      local CurrentFrame = game:GetFrameCount()
+      if S_Stealer.Direction ~= CurrentDirection --Move
+      or CurrentFrame > S_Stealer.DirectionStart +20 --Time pass
+      or CurrentDirection == Direction.NO_DIRECTION --Change direction
+      then -- We need to refresh the animation
+        player:PlayExtraAnimation("Pickup" ..PickupTail[])
+        S_Stealer.DirectionStart = CurrentFrame
+        S_Stealer.Direction = CurrentDirection
+      end
+      S_Stealer.Entity.Position = player.Position + Vector(0,1)
+    end
+    
+    
+    
+    
+    
+  end
+  
+  if S_Stealer.Flame ~= nil then --The flame isn't here
+    if S_Stealer.Flame.FrameCount == 60 then --existing for too long
+      player:FullCharge(4)
+    end
+  end
+end
+Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE,Additionals.soul_stealer_update)
 
 function Additionals:use_soul_stealer()
   
