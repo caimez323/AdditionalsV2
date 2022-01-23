@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="19/01/2022 23:11:53" Version="33" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="24/01/2022 00:23:53" Version="36" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="items\collectibles\soul_stealer.png" Id="0"/>

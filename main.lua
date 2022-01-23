@@ -43,6 +43,7 @@ local Afterflyver = false
 local rangeBoost=0
 local AlreadyBothGrail = false
 local WzBoss = false
+local removeNextTears = false
 
 
 TearVariant.STARS = Isaac.GetEntityVariantByName("Stars")
@@ -1016,13 +1017,14 @@ Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_flyverter, flyv
 
 
 local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom") -- phantom entity
+local SoulStealerEntity = Isaac.GetEntityVariantByName("Soul Stealer") -- Soul Stealer entity
 
 
 local S_Stealer = {
  Active = false,
  Direction = Direction.NO_DIRECTION,
  DirectionStart = 1,
- EntityVariant = Isaac.GetEntityVariantByName("Soul Stealer"), -- Soul Stealer entity
+ EntityVariant = SoulStealerEntity,
  Flame = nil,
  Entity = nil
 }
@@ -1043,7 +1045,8 @@ function Additionals:soul_stealer_update(player)
       S_Stealer.Active = false
       S_Stealer.Entity:Remove()
       player:StopExtraAnimation()
-      S_Stealer.Flame = Isaac.Spawn(EntityType.ENTITY_EFFECT, 10,0, player.Position, player:GetShootingJoystick():       Normalized()*14 + player.Velocity, player):ToEffect()
+      S_Stealer.Flame = Isaac.Spawn(EntityType.ENTITY_EFFECT, 10,0, player.Position, player:GetShootingJoystick():Normalized()*14 + player.Velocity, player):ToEffect()
+      --Item throwable sharp key
       --144 EnemyGhost
       --10 Blue flame
       --52 Red flame
@@ -1053,10 +1056,10 @@ function Additionals:soul_stealer_update(player)
       local CurrentDirection= player:GetMovementDirection()
       local CurrentFrame = game:GetFrameCount()
       if S_Stealer.Direction ~= CurrentDirection --Move
-      or CurrentFrame > S_Stealer.DirectionStart +20 --Time pass
+      or CurrentFrame > S_Stealer.DirectionStart + 20 --Time pass
       or CurrentDirection == Direction.NO_DIRECTION --Change direction
       then -- We need to refresh the animation
-        player:PlayExtraAnimation("Pickup" ..PickupTail[CurrentDirection])
+        player:PlayExtraAnimation("Pickup" .. PickupTail[CurrentDirection])
         S_Stealer.DirectionStart = CurrentFrame
         S_Stealer.Direction = CurrentDirection
       end
@@ -1075,9 +1078,7 @@ Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE,Additionals.soul_ste
 function Additionals:use_soul_stealer()
   S_Stealer.Active =  true
   local player = Isaac.GetPlayer(0)
-  --Isaac.Spawn(EntityType.ENTITY_EFFECT,S_Stealer.EntityVariant,0,player.Position,Vector(0,0), player)
   S_Stealer.Entity = Isaac.Spawn(EntityType.ENTITY_EFFECT,S_Stealer.EntityVariant,0,player.Position,Vector(0,0), player)
-  --player:AnimateCollectible(SoulStealerID, "UseItem", "PlayerPickup")
   
   
 end
