@@ -1018,7 +1018,7 @@ Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_flyverter, flyv
 
 local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom") -- phantom entity
 local SoulStealerEntity = Isaac.GetEntityVariantByName("Soul Stealer") -- Soul Stealer entity
-
+local deleteNextTear = false
 
 local S_Stealer = {
  Active = false,
@@ -1039,6 +1039,18 @@ local PickupTail = {
   }
 
 function Additionals:soul_stealer_update(player)
+  if deleteNextTear then
+   --Delete next tear
+      local entities = Isaac.FindInRadius(player.Position,10)
+      local deletedTear = false
+      for i =1, #entities do
+        if entities[i].Type == EntityType.ENTITY_TEAR and not deletedTear then
+          entities[i]:Remove()
+          deletedTear = true
+          deleteNextTear = false
+        end
+      end
+  end
   
   if S_Stealer.Active then --If the item is active
     if player:GetShootingJoystick():Length() > 0.1 then --If the fire key is pressed, fire
@@ -1052,6 +1064,8 @@ function Additionals:soul_stealer_update(player)
       --52 Red flame
       
       S_Stealer.Flame:SetTimeout(60)
+      deleteNextTear = true
+     
     else -- Walking
       local CurrentDirection= player:GetMovementDirection()
       local CurrentFrame = game:GetFrameCount()
