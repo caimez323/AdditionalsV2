@@ -1104,7 +1104,11 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
     S_Stealer.Flame:Remove()
     S_Stealer.Flame = nil
     
-    target:TakeDamage(player.Damage,0,EntityRef(player),countdown) -- Normal damage
+    if target.HitPoints <= 3 then --the entity died of the fire
+      Isaac.Spawn(EntityType.ENTITY_PICKUP,PickupVariant.PICKUP_BOMB,BombSubType.BOMB_NORMAL,Isaac.GetPlayer(0).Position,Vector(0,0),Isaac.GetPlayer(0))
+    end
+    
+    target:TakeDamage(3,0,EntityRef(player),countdown) -- Normal damage
     return false --Don't do normal damage
   end
 end
