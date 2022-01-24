@@ -1099,21 +1099,30 @@ end
 Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_soul_stealer, SoulStealerID)
 
 function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
-  
+  local player = Isaac.GetPlayer(0)
   if S_Stealer.Flame ~= nil and source.Entity.Index == S_Stealer.Flame.Index then
     S_Stealer.Flame:Remove()
     S_Stealer.Flame = nil
     
     if target.HitPoints <= 3 then --the entity died of the fire
-      Isaac.Spawn(EntityType.ENTITY_PICKUP,PickupVariant.PICKUP_BOMB,BombSubType.BOMB_NORMAL,Isaac.GetPlayer(0).Position,Vector(0,0),Isaac.GetPlayer(0))
+      --Isaac.Spawn(EntityType.ENTITY_PICKUP,PickupVariant.PICKUP_BOMB,BombSubType.BOMB_NORMAL,Isaac.GetPlayer(0).Position,Vector(0,0),Isaac.GetPlayer(0))
+      phantom = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, PhantomFamiliar, 0, player.Position, Vector(0,0), player)
+      
     end
     
     target:TakeDamage(3,0,EntityRef(player),countdown) -- Normal damage
-    return false --Don't do normal damage
+    return false --Don't do initial damage
   end
 end
 Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.S_StealerOnDamage)
 
+
+function Additionals:onPhantomUpdate(fam)
+  fam:FollowParent()
+
+end
+
+Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE,Additionals.onPhantomUpdate, PhantomFamiliar)
 
 
 Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, entity, Amount, Flag, Source, Countdown)
