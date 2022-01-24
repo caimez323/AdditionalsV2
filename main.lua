@@ -1098,7 +1098,17 @@ function Additionals:use_soul_stealer()
 end
 Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_soul_stealer, SoulStealerID)
 
-
+function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
+  
+  if S_Stealer.Flame ~= nil and source.Entity.Index == S_Stealer.Flame.Index then
+    S_Stealer.Flame:Remove()
+    S_Stealer.Flame = nil
+    
+    target:TakeDamage(player.Damage,0,EntityRef(player),countdown) -- Normal damage
+    return false --Don't do normal damage
+  end
+end
+Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.S_StealerOnDamage)
 
 
 
