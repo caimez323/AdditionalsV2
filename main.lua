@@ -1098,6 +1098,7 @@ function Additionals:use_soul_stealer()
 end
 Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_soul_stealer, SoulStealerID)
 
+
 function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
   local player = Isaac.GetPlayer(0)
   if S_Stealer.Flame ~= nil and source.Entity.Index == S_Stealer.Flame.Index then
@@ -1111,23 +1112,36 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
     target:TakeDamage(3,0,EntityRef(player),countdown) -- Normal damage
     return false --Don't do initial damage
   end
+  
 end
 Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.S_StealerOnDamage)
 
+
+
+
 function Additionals:onInitPhantom(phantom)
-phantom.IsFollower = true
+  phantom.IsFollower = true
+	phantom:AddToFollowers()
+	phantom.FireCooldown = 3
 end
 Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, Additionals.onInitPhantom, PhantomFamiliar)
 
 
 function Additionals:onPhantomUpdate(phantom)
-  phantom:FollowParent()
   local player = Isaac.GetPlayer(0)
-  if player:GetShootingJoystick():Length() > 0.1 and phantom.FrameCount%30 == 0 then --the player shoot
+  if player:GetShootingJoystick():Length() > 0.1 and phantom.FireCooldown <= 0 then --the player shoot
     tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER,0,phantom.Position,player:GetShootingJoystick():Normalized()*14 + phantom.Velocity,phantom):ToTear()
+    if player:HasTrinket(Isaac.GetTrinketIdByName("Forgotten Lullaby")) then
+				phantom.FireCooldown = 30
+			else
+				phantom.FireCooldown = 60
+			end
   end
+  phantom.FireCooldown = phantom.FireCooldown -1
+  phantom:FollowParent()
 end
 Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE,Additionals.onPhantomUpdate, PhantomFamiliar)
+
 
 
 Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, entity, Amount, Flag, Source, Countdown)
