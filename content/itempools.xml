@@ -9,7 +9,8 @@
     <Item Name="Super Damages" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
     <Item Name="Darts" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
     <Item Name="Laser Drone" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
-    Give And Take
+    <Item Name="Give And Take" Weight="1" DecreaseBy="1.0" RemoveOn="0.1"/>
+    <Item Name="Soul Stealer" Weight="1" DecreaseBy="1.0" RemoveOn="0.1"/>
 	</Pool>
   <Pool Name="bossrush">
     <Item Name="Proteins" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
@@ -22,7 +23,7 @@
     <Item Name="Super Damages" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
     <Item Name="Darts" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
     <Item Name="Laser Drone" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
-    Give And Take
+    <Item Name="Give And Take" Weight="1" DecreaseBy="1.0" RemoveOn="0.1"/>
   </Pool>
 	<Pool Name="devil">
     <Item Name="Not-Glass Cannon" Weight ="1" DecreaseBy = "0,75" RemoveOn="0.1"/>
@@ -41,6 +42,7 @@
     <Item Name="Darts" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
     <Item Name="Laser Drone" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
     <Item Name="The Fly-verter" Weight="1" DecreaseBy="1.0" RemoveOn="0.1"/>
+    <Item Name="Soul Stealer" Weight="1" DecreaseBy="1.0" RemoveOn="0.1"/>
 	</Pool>
   <Pool Name="curse">
     <Item Name="Not-Glass Cannon" Weight ="1" DecreaseBy = "0.75" RemoveOn="0.1"/>
@@ -52,14 +54,13 @@
     <Item Name="Give And Take" Weight="1" DecreaseBy="1.0" RemoveOn="0.1"/>
 	</Pool>
   <Pool Name="secret">
-    <Item Name="Freezy Wind" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
     <Item Name="Revenge" Weight="1" DecreaseBy = "0.75" RemoveOn="0.1"/>
     <Item Name="Frozen Body" Weight ="1" DecreaseBy = "0.75" RemoveOn="0.1"/>
     <Item Name="White Flower" Weight ="1" DecreseBy="0.75" RemoveOn="0.1"/>
     <Item Name="Demon Ring" Weight="1" DecreaseBy="1.0" RemoveOn="0.1"/>
     <Item Name="Super Damages" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
     <Item Name="Laser Drone" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
-    Give And Take
+    <Item Name="Give And Take" Weight="1" DecreaseBy="0.75" RemoveOn="0.1"/>
 	</Pool>
   <Pool Name="challenge">
     <Item Name="Not-Glass Cannon" Weight ="1" DecreaseBy = "0.75" RemoveOn="0.1"/>

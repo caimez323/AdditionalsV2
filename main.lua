@@ -1030,7 +1030,7 @@ local S_Stealer = {
    Damage = 1.5,
    DamageCap = 10,
    FireRate = 50,
-   FireRateCap = 5,
+   FireRateCap = 10,
    }
 }
 
@@ -1066,10 +1066,6 @@ function Additionals:soul_stealer_update(player)
       S_Stealer.Entity:Remove()
       player:StopExtraAnimation()
       S_Stealer.Flame = Isaac.Spawn(EntityType.ENTITY_EFFECT, 10,0, player.Position, player:GetShootingJoystick():Normalized()*14 + player.Velocity, player):ToEffect()
-      --Item throwable sharp key
-      --144 EnemyGhost
-      --10 Blue flame
-      --52 Red flame
       S_Stealer.Entity = nil
       
       S_Stealer.Flame:SetTimeout(60)
