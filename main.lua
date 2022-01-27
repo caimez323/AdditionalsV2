@@ -1106,9 +1106,9 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
     S_Stealer.Flame:Remove()
     S_Stealer.Flame = nil
     
-    if target.HitPoints <= 3 then --the entity'll die of the fire
-      local phantoms = Isaac.FindByType(EntityType.ENTITY_FAMILIAR,PhantomFamiliar, 0)
-      Isaac.ConsoleOutput(#phantoms)
+    if target.HitPoints <= 3 and target.Type ~= EntityType.ENTITY_FIREPLACE then --the entity'll die of the fire
+      --local phantoms = Isaac.FindByType(EntityType.ENTITY_FAMILIAR,PhantomFamiliar, 0)
+      --Isaac.ConsoleOutput(#phantoms)
       phantom = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, PhantomFamiliar, 0, player.Position, Vector(0,0), player):ToFamiliar()
     end
     
