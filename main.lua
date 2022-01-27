@@ -1106,20 +1106,31 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
     S_Stealer.Flame:Remove()
     S_Stealer.Flame = nil
     
+    
+    
+    
     if target.HitPoints <= 3 and target.Type ~= EntityType.ENTITY_FIREPLACE then --the entity'll die of the fire
-      --local phantoms = Isaac.FindByType(EntityType.ENTITY_FAMILIAR,PhantomFamiliar, 0)
-      --Isaac.ConsoleOutput(#phantoms)
+      local phantoms = Isaac.FindByType(EntityType.ENTITY_FAMILIAR,PhantomFamiliar, 0)
       phantom = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, PhantomFamiliar, 0, player.Position, Vector(0,0), player):ToFamiliar()
+      --Effect 16
     end
     
     target:TakeDamage(3,0,EntityRef(player),countdown) -- Normal damage
     return false --Don't do initial damage
+    
+  elseif source.SpawnerVariant == PhantomFamiliar and source.Type == EntityType.ENTITY_TEAR and source.SpawnerType == EntityType.ENTITY_FAMILIAR then
+    --the target has been hitting by the phantom
+    
+    
   end
   
 end
 Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.S_StealerOnDamage)
 
-
+function Additionals:Upgrade(phantom)
+  
+  
+end
 
 
 function Additionals:onInitPhantom(phantom)
@@ -1135,11 +1146,11 @@ function Additionals:onPhantomUpdate(phantom)
   if player:GetShootingJoystick():Length() > 0.1 and phantom.FireCooldown <= 0 then --the player shoot
     tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER,0,phantom.Position,player:GetShootingJoystick():Normalized()*14 + phantom.Velocity,phantom):ToTear()
     
-    if player:HasTrinket(Isaac.GetTrinketIdByName("Forgotten Lullaby")) then
-				phantom.FireCooldown = 40
-			else
-				phantom.FireCooldown = math.random(45,75)
-			end
+    --if player:HasTrinket(Isaac.GetTrinketIdByName("Forgotten Lullaby")) then
+				--phantom.FireCooldown = 40
+			--else
+				--phantom.FireCooldown = math.random(45,75)
+			--end
   end
   phantom.FireCooldown = phantom.FireCooldown -1
   phantom:FollowParent()
