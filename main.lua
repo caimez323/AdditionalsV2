@@ -1066,6 +1066,12 @@ function Additionals:soul_stealer_update(player)
       S_Stealer.Entity:Remove()
       player:StopExtraAnimation()
       S_Stealer.Flame = Isaac.Spawn(EntityType.ENTITY_EFFECT, 10,0, player.Position, player:GetShootingJoystick():Normalized()*14 + player.Velocity, player):ToEffect()
+      
+        local color = Color(1,1,1,1,0,0,0)
+        color:SetColorize(0.82,0.82,0.82,1)
+        local sprite = S_Stealer.Flame:GetSprite()
+        sprite.Color = color
+        
       S_Stealer.Entity = nil
       
       S_Stealer.Flame:SetTimeout(60)
@@ -1117,7 +1123,7 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
         phantom = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, PhantomFamiliar, 0, player.Position, Vector(0,0), player):ToFamiliar()
         
       else
-        upgradeEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.POOF02,0,phantom.Position,Vector(0,0),player)
+        upgradeEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.POOF02,0,phantom.Position,Vector(0,0),player):ToEffect()
         effectColor = Color(1,1,1,1,0,0,0)
         effectColor:SetColorize(0.2,0.1,0.8,1)
         local effectSprite = upgradeEffect:GetSprite()
