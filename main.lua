@@ -1027,7 +1027,10 @@ local S_Stealer = {
  EntityVariant = SoulStealerEntity,
  Flame = nil,
  Entity = nil,
- PhantomDamage= 1.5,
+ Phantom = {
+   Damage = 1.5,
+   FireRate = 60,
+   }
 }
 
 local PickupTail = {
@@ -1121,7 +1124,7 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
     
   elseif source.SpawnerVariant == PhantomFamiliar and source.Type == EntityType.ENTITY_TEAR and source.SpawnerType == EntityType.ENTITY_FAMILIAR then
     --the target has been hitting by the phantom
-    target:TakeDamage(S_Stealer.PhantomDamage,0,EntityRef(player),countdown) -- Normal damage
+    target:TakeDamage(S_Stealer.Phantom.Damage,0,EntityRef(player),countdown) -- Normal damage
     return false
   end
   
