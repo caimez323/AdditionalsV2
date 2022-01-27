@@ -1062,6 +1062,7 @@ function Additionals:soul_stealer_update(player)
       --144 EnemyGhost
       --10 Blue flame
       --52 Red flame
+      S_Stealer.Entity = nil
       
       S_Stealer.Flame:SetTimeout(60)
       deleteNextTear = true
@@ -1091,8 +1092,10 @@ Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE,Additionals.soul_ste
 
 function Additionals:use_soul_stealer()
   S_Stealer.Active =  true
-  local player = Isaac.GetPlayer(0)
-  S_Stealer.Entity = Isaac.Spawn(EntityType.ENTITY_EFFECT,S_Stealer.EntityVariant,0,player.Position,Vector(0,0), player) --spawn entity that the player hold
+  local player = Isaac.GetPlayer(0)--
+  if S_Stealer.Entity == nil then
+    S_Stealer.Entity = Isaac.Spawn(EntityType.ENTITY_EFFECT,S_Stealer.EntityVariant,0,player.Position,Vector(0,0), player) --spawn entity that the player hold
+  end
 end
 Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_soul_stealer, SoulStealerID)
 
@@ -1104,6 +1107,8 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
     S_Stealer.Flame = nil
     
     if target.HitPoints <= 3 then --the entity'll die of the fire
+      local phantoms = Isaac.FindByType(EntityType.ENTITY_FAMILIAR,PhantomFamiliar, 0)
+      Isaac.ConsoleOutput(#phantoms)
       phantom = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, PhantomFamiliar, 0, player.Position, Vector(0,0), player):ToFamiliar()
     end
     
@@ -1133,7 +1138,7 @@ function Additionals:onPhantomUpdate(phantom)
     if player:HasTrinket(Isaac.GetTrinketIdByName("Forgotten Lullaby")) then
 				phantom.FireCooldown = 40
 			else
-				phantom.FireCooldown = 80
+				phantom.FireCooldown = math.random(45,75)
 			end
   end
   phantom.FireCooldown = phantom.FireCooldown -1
