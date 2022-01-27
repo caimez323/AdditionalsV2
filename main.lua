@@ -1044,8 +1044,6 @@ local PickupTail = {
   }
 
 function Additionals:soul_stealer_update(player)
-  Isaac.RenderText("e",50, 30, 1, 1, 1, 255)
-  
   
   if deleteNextTear then
    --Delete next tear
