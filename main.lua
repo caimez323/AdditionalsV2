@@ -1028,7 +1028,9 @@ local S_Stealer = {
  Entity = nil,
  Phantom = {
    Damage = 1.5,
-   FireRate = 60,
+   DamageCap = 10,
+   FireRate = 50,
+   FireRateCap = 5,
    }
 }
 
@@ -1042,6 +1044,9 @@ local PickupTail = {
   }
 
 function Additionals:soul_stealer_update(player)
+  Isaac.RenderText("e",50, 30, 1, 1, 1, 255)
+  
+  
   if deleteNextTear then
    --Delete next tear
       local entities = Isaac.FindInRadius(player.Position,10)
@@ -1095,7 +1100,7 @@ Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE,Additionals.soul_ste
 
 function Additionals:use_soul_stealer()
   S_Stealer.Active =  true
-  local player = Isaac.GetPlayer(0)--
+  local player = Isaac.GetPlayer(0)
   if S_Stealer.Entity == nil then
     S_Stealer.Entity = Isaac.Spawn(EntityType.ENTITY_EFFECT,S_Stealer.EntityVariant,0,player.Position,Vector(0,0), player) --spawn entity that the player hold
   end
@@ -1104,18 +1109,17 @@ Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_soul_stealer, S
 
 
 function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
+
   local player = Isaac.GetPlayer(0)
   if S_Stealer.Flame ~= nil and source.Entity.Index == S_Stealer.Flame.Index then
     S_Stealer.Flame:Remove()
     S_Stealer.Flame = nil
     
-    
-    
-    
-    if target.HitPoints <= 3 and target.Type ~= EntityType.ENTITY_FIREPLACE then --the entity'll die of the fire
+    if target.HitPoints <= 8 and target.Type ~= EntityType.ENTITY_FIREPLACE then --the entity'll die of the fire
       local phantoms = Isaac.FindByType(EntityType.ENTITY_FAMILIAR,PhantomFamiliar, 0)
       if #phantoms < 1 then
         phantom = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, PhantomFamiliar, 0, player.Position, Vector(0,0), player):ToFamiliar()
+        
       else
         upgradeEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.POOF02,0,phantom.Position,Vector(0,0),player)
         effectColor = Color(1,1,1,1,0,0,0)
@@ -1123,12 +1127,10 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
         local effectSprite = upgradeEffect:GetSprite()
         effectSprite.Color = effectColor
         Additionals.Upgrade()
-        --Upgrade
-        --Effect 16
       end
     end
     
-    target:TakeDamage(3,0,EntityRef(player),countdown) -- Normal damage
+    target:TakeDamage(8,0,EntityRef(player),countdown) -- Normal damage
     return false --Don't do initial damage
     
   elseif source.SpawnerVariant == PhantomFamiliar and source.Type == EntityType.ENTITY_TEAR and source.SpawnerType == EntityType.ENTITY_FAMILIAR then
@@ -1141,8 +1143,15 @@ end
 Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.S_StealerOnDamage)
 
 function Additionals:Upgrade()
-  if math.random(0,1) == 0 then
   
+  if (math.random(0,1) == 0) then 
+    if S_Stealer.Phantom.Damage+1 <= S_Stealer.Phantom.DamageCap then
+      S_Stealer.Phantom.Damage = S_Stealer.Phantom.Damage +1
+    end
+  else
+    if S_Stealer.Phantom.FireRate-5 >= S_Stealer.Phantom.FireRateCap then
+      S_Stealer.Phantom.FireRate = S_Stealer.Phantom.FireRate -5
+    end
   end
 end
 
@@ -1162,9 +1171,9 @@ function Additionals:onPhantomUpdate(phantom)
     tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER,0,phantom.Position,player:GetShootingJoystick():Normalized()*14 + phantom.Velocity,phantom):ToTear()
     
     if player:HasTrinket(Isaac.GetTrinketIdByName("Forgotten Lullaby")) then
-				phantom.FireCooldown = 40
+				phantom.FireCooldown = math.floor(S_Stealer.Phantom.FireRate *0.666667)
 			else
-				phantom.FireCooldown = 60
+				phantom.FireCooldown = S_Stealer.Phantom.FireRate
 			end
   end
   phantom.FireCooldown = phantom.FireCooldown -1
