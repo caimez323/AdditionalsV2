@@ -1026,7 +1026,8 @@ local S_Stealer = {
  DirectionStart = 1,
  EntityVariant = SoulStealerEntity,
  Flame = nil,
- Entity = nil
+ Entity = nil,
+ PhantomDamage= 1.5,
 }
 
 local PickupTail = {
@@ -1120,8 +1121,8 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
     
   elseif source.SpawnerVariant == PhantomFamiliar and source.Type == EntityType.ENTITY_TEAR and source.SpawnerType == EntityType.ENTITY_FAMILIAR then
     --the target has been hitting by the phantom
-    --target:TakeDamage(30,0,EntityRef(player),countdown) -- Normal damage
-    --return false
+    target:TakeDamage(S_Stealer.PhantomDamage,0,EntityRef(player),countdown) -- Normal damage
+    return false
   end
   
 end
@@ -1149,7 +1150,7 @@ function Additionals:onPhantomUpdate(phantom)
     if player:HasTrinket(Isaac.GetTrinketIdByName("Forgotten Lullaby")) then
 				phantom.FireCooldown = 40
 			else
-				phantom.FireCooldown = math.random(45,75)
+				phantom.FireCooldown = 60
 			end
   end
   phantom.FireCooldown = phantom.FireCooldown -1
