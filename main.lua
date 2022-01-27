@@ -1019,7 +1019,6 @@ Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_flyverter, flyv
 local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom") -- phantom entity
 local SoulStealerEntity = Isaac.GetEntityVariantByName("Soul Stealer") -- Soul Stealer entity
 local deleteNextTear = false
-
 local S_Stealer = {
  Active = false,
  Direction = Direction.NO_DIRECTION,
@@ -1115,8 +1114,18 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
     
     if target.HitPoints <= 3 and target.Type ~= EntityType.ENTITY_FIREPLACE then --the entity'll die of the fire
       local phantoms = Isaac.FindByType(EntityType.ENTITY_FAMILIAR,PhantomFamiliar, 0)
-      phantom = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, PhantomFamiliar, 0, player.Position, Vector(0,0), player):ToFamiliar()
-      --Effect 16
+      if #phantoms < 1 then
+        phantom = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, PhantomFamiliar, 0, player.Position, Vector(0,0), player):ToFamiliar()
+      else
+        upgradeEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.POOF02,0,phantom.Position,Vector(0,0),player)
+        effectColor = Color(1,1,1,1,0,0,0)
+        effectColor:SetColorize(0.2,0.1,0.8,1)
+        local effectSprite = upgradeEffect:GetSprite()
+        effectSprite.Color = effectColor
+        Additionals.Upgrade()
+        --Upgrade
+        --Effect 16
+      end
     end
     
     target:TakeDamage(3,0,EntityRef(player),countdown) -- Normal damage
@@ -1131,9 +1140,10 @@ function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
 end
 Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.S_StealerOnDamage)
 
-function Additionals:Upgrade(phantom)
+function Additionals:Upgrade()
+  if math.random(0,1) == 0 then
   
-  
+  end
 end
 
 
@@ -1142,6 +1152,7 @@ function Additionals:onInitPhantom(phantom)
 	phantom:AddToFollowers()
 	phantom.FireCooldown = 3
 end
+
 Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, Additionals.onInitPhantom, PhantomFamiliar)
 
 
