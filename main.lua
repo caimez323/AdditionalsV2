@@ -24,7 +24,6 @@ local Zodiac = {
   ToBeStat = false,
   }
 
-local AlreadyGrail =false
 local AlreadyCursedGrail =false
 local max = 0
 local timeA =0
@@ -162,7 +161,6 @@ function Additionals:onUpdate(player)
     AlreadyStart = false
     AlreadyBothGrail = false
     AlreadyProteins = false
-    AlreadyGrail =false
     AlreadyCursedGrail =false
     
     Zodiac.Transformed=false
