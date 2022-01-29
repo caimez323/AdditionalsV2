@@ -18,9 +18,12 @@ Additionals.COSTUME_WHITE_FLOWER= Isaac.GetCostumeIdByPath("gfx/characters/white
 Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS = Isaac.GetCostumeIdByPath("gfx/characters/transformation_ophiuscus.anm2")
 
 --Reset some variables now
-local Zodiac_C = 0
-local Zodiac_T = false
-local Zodiac_TBS = false
+local Zodiac = {
+  Count = 0,
+  Transformed = false,
+  ToBeStat = false,
+  }
+
 local AlreadyDemon = false
 local AlreadyGrail =false
 local AlreadyCursedGrail =false
@@ -162,8 +165,8 @@ function Additionals:onUpdate(player)
     AlreadyGrail =false
     AlreadyCursedGrail =false
     
-    Zodiac_T=false
-    Zodiac_C = 0
+    Zodiac.Transformed=false
+    Zodiac.Count = 0
     
     HasAR=false
     HasT=false
@@ -391,10 +394,10 @@ function Additionals:onEvaluateItems(player,cacheFlag)
 --Transformation Ophiuscus
 --The transformation's stat is updated here !!!! Update to think to check if the player has already the bonus instead of checking if he has the transformation
     if cacheFlag == CacheFlag.CACHE_SPEED then
-      if (Zodiac_T and not Zodiac_TBS) then -- If we just transform and the stats has not been given
+      if (Zodiac.Transformed and not Zodiac.ToBeStat) then -- If we just transform and the stats has not been given
         --Player has Zodiac movement speed
         player.MoveSpeed = player.MoveSpeed + 0.35
-        Zodiac_TBS = true
+        Zodiac.ToBeStat = true
       end
     end
     if cacheFlag == CacheFlag.CACHE_FLYING then
@@ -692,57 +695,57 @@ function Additionals:Transform()
   local pos = Vector(player.Position.X,player.Position.Y)
   if player:HasCollectible(CollectibleType.COLLECTIBLE_ARIES) and not HasA then
     HasA = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_TAURUS) and not HasT then
     HasT = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_GEMINI) and not HasG then
     HasG = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_CANCER) and not HasCR then
     HasCR = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_LEO) and not HasLE then
     HasLE = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_VIRGO) and not HasV then
     HasV = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_LIBRA) and not HasLI then
     HasLI = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_SCORPIO) and not HasSC then
     HasSC = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_SAGITTARIUS) and not HasSA then
     HasSA = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_CAPRICORN) and not HasCA then
     HasCA = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_AQUARIUS) and not HasAQ then
     HasAQ = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   if player:HasCollectible(CollectibleType.COLLECTIBLE_PISCES) and not HasP then
     HasP = true
-    Zodiac_C = Zodiac_C+1
+    Zodiac.Count = Zodiac.Count+1
   end
   --If he had enough add transformation, hearts, and revaluate to give stats
-  if Zodiac_C >= 3 and not Zodiac_T then --Not transformed yet
+  if Zodiac.Count >= 3 and not Zodiac.Transformed then --Not transformed yet
     
-    Zodiac_T = true
-    Zodiac_TBS = false
+    Zodiac.Transformed = true
+    Zodiac.ToBeStat = false
     
     player:StopExtraAnimation() 
     SFXManager():Play(SoundEffect.SOUND_POWERUP_SPEWER, 0.9, 0, false, 1)
