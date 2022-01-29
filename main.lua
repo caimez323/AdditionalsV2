@@ -772,7 +772,6 @@ function Additionals:Transform()
   --If he had enough add transformation, hearts, and revaluate to give stats
   if Zodiac_C >= 3 and not Zodiac_T then --Not transformed yet
     player:AddCacheFlags(CacheFlag.CACHE_SPEED)
-    player:AddCacheFlags(CacheFlag.CACHE_FLYING)
     Zodiac_T = true
     Zodiac_TBS = false
     Zodiac_TBF = false
@@ -1139,6 +1138,7 @@ end
 
 
 function Additionals:onInitPhantom(phantom)
+  --Default animation "FloatDown"
   phantom.IsFollower = true
 	phantom:AddToFollowers()
 	phantom.FireCooldown = 3
@@ -1152,6 +1152,8 @@ function Additionals:onPhantomUpdate(phantom)
   local move_dir = player:GetMovementDirection()
   local sprite = phantom:GetSprite()
   local player_fire_direction = player:GetFireDirection()
+  
+  --Change Animation
   if player_fire_direction == Direction.NO_DIRECTION then
     sprite:Play(DIRECTION_FLOAT_ANIM[move_dir], false)
   else
@@ -1159,12 +1161,13 @@ function Additionals:onPhantomUpdate(phantom)
     sprite:Play(DIRECTION_SHOOT_ANIM[animDirection], false)
   end
   
+  --Fire
   if player:GetShootingJoystick():Length() > 0.1 and phantom.FireCooldown <= 0 then --the player shoot
     tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER,0,phantom.Position,player:GetShootingJoystick():Normalized()*14 + phantom.Velocity,phantom):ToTear()
     
     if player:HasTrinket(Isaac.GetTrinketIdByName("Forgotten Lullaby")) then
 				phantom.FireCooldown = math.floor(S_Stealer.Phantom.FireRate *0.666667)
-			else
+			else --Reset FireRate
 				phantom.FireCooldown = S_Stealer.Phantom.FireRate
 			end
   end
@@ -1238,17 +1241,7 @@ end
 --Spawn of the familiar if we have the item and add a name if we need to change something (in local)
 local function onEvaluateCache(_,_,cacheFlag)
   local player = Isaac.GetPlayer(0)
-  if (not(player:HasCollectible(FrozenItemId))) and AlreadyGaveFrozen then
-    e:Remove()
-    AlreadyGaveFrozen = false
-  end
-  if cacheFlag == CacheFlag.CACHE_FAMILIARS and player:HasCollectible(FrozenItemId) then
-    if(not AlreadyGaveFrozen) then
-      e = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, variant, 0, player.Position, Vector(0,0), player)
-      AlreadyGaveFrozen = true
-    end
-  end
-  
+
   if (not(player:HasCollectible(LaserDroneID))) and AlreadyGaveLaserDrone then
     b:Remove()
     AlreadyGaveLaserDrone = false
