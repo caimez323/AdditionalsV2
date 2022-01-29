@@ -1238,24 +1238,8 @@ local function onInit(_,fam)
   local player = Isaac.GetPlayer(0)
   fam.IsFollower=true
 end
---Spawn of the familiar if we have the item and add a name if we need to change something (in local)
-local function onEvaluateCache(_,_,cacheFlag)
-  local player = Isaac.GetPlayer(0)
 
-  if (not(player:HasCollectible(LaserDroneID))) and AlreadyGaveLaserDrone then
-    b:Remove()
-    AlreadyGaveLaserDrone = false
-  end
-  if cacheFlag == CacheFlag.CACHE_FAMILIARS and player:HasCollectible(LaserDroneID) then
-    if(not AlreadyGaveLaserDrone) then
-      b = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, variant1, 0, player.Position, Vector(0,0), player)
-      AlreadyGaveLaserDrone = true
-    end
-  end
-  
-end
 
-Additionals:AddCallback(ModCallbacks.MC_EVALUATE_CACHE,onEvaluateCache)
 Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, onInit, variant)
 Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE,onFamiliarUpdate, variant)
 
