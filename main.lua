@@ -7,12 +7,10 @@
     Mod made by caimez_
 --]]
 
-
-
 --Settings for the mod
 local Additionals = RegisterMod("AdditionalsV2",1)
 local game = Game()
-
+local hud = Game():GetHUD()
 
 --Set the costumes
 Additionals.COSTUME_DEMON_RING= Isaac.GetCostumeIdByPath("gfx/characters/demon_ring.anm2")
@@ -23,7 +21,6 @@ Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS = Isaac.GetCostumeIdByPath("gfx/cha
 local Zodiac_C = 0
 local Zodiac_T = false
 local Zodiac_TBS = false
-local Zodiac_TBF = false
 local AlreadyDemon = false
 local AlreadyGrail =false
 local AlreadyCursedGrail =false
@@ -143,6 +140,9 @@ Additionals:AddCallback(ModCallbacks.MC_GET_CARD, Additionals.getCard);
 --COSTUMES AND RESET VARIABLES
 --This function is called each 0.5s
 function Additionals:onUpdate(player)
+  Isaac.RenderText(Zodiac_C,200,200,1,1,1,1)
+  
+  
   if (game:GetFrameCount() == 1 )then -- First frame of a run, don't trigger on continue
     Isaac.ConsoleOutput("F1")
     HasWhiteFlower = false
@@ -404,18 +404,7 @@ function Additionals:onEvaluateItems(player,cacheFlag)
       end
     end
     if cacheFlag == CacheFlag.CACHE_FLYING then
-      if Zodiac_T and not Zodiac_TBF then
-        --Player has Zodiac Fly
-        player:StopExtraAnimation() 
-        --player:AddSoulHearts(4)
-        SFXManager():Play(SoundEffect.SOUND_POWERUP_SPEWER, 0.9, 0, false, 1)
-        local hud = Game():GetHUD()
-        Isaac.ExecuteCommand("goto s.planetarium")
-        hud:ShowItemText("Ophiuscus !","", false)
-        player:AddNullCostume(Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS)
-        Zodiac_TBF = true
-        
-      end
+      
     end
     
   --Give And Take
@@ -757,11 +746,20 @@ function Additionals:Transform()
   end
   --If he had enough add transformation, hearts, and revaluate to give stats
   if Zodiac_C >= 3 and not Zodiac_T then --Not transformed yet
-    player:AddCacheFlags(CacheFlag.CACHE_SPEED)
+    
     Zodiac_T = true
     Zodiac_TBS = false
-    Zodiac_TBF = false
+    
+    player:StopExtraAnimation() 
+    SFXManager():Play(SoundEffect.SOUND_POWERUP_SPEWER, 0.9, 0, false, 1)
+    Isaac.ExecuteCommand("goto s.planetarium")
+    hud:ShowItemText("Ophiuscus !","", false)
+    
+    player:AddNullCostume(Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS)
+    player:AddCacheFlags(CacheFlag.CACHE_SPEED)
+    
     player:EvaluateItems()
+    
   end
 end
 Additionals:AddCallback(ModCallbacks.MC_POST_UPDATE, Additionals.Transform)
