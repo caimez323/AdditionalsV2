@@ -24,7 +24,6 @@ local Zodiac = {
   ToBeStat = false,
   }
 
-local AlreadyDemon = false
 local AlreadyGrail =false
 local AlreadyCursedGrail =false
 local max = 0
@@ -146,8 +145,10 @@ function Additionals:onUpdate(player)
   
   if (game:GetFrameCount() == 1 )then -- First frame of a run, don't trigger on continue
     Isaac.ConsoleOutput("F1")
+    
     HasWhiteFlower = false
-    AlreadyDemon = false
+    HasDemon = false
+    
     Afterflyver = false
     FlameTear = false
     FlameTimeA=0
@@ -161,7 +162,6 @@ function Additionals:onUpdate(player)
     AlreadyStart = false
     AlreadyBothGrail = false
     AlreadyProteins = false
-    AlreadyDemon = false
     AlreadyGrail =false
     AlreadyCursedGrail =false
     
@@ -263,10 +263,10 @@ function Additionals:onEvaluateItems(player,cacheFlag)
     end
 --DEMON RING
     if(player:HasCollectible(DemonRingId))then
-      if not AlreadyDemon then
+      if not HasDemon then
         player:AddBlackHearts(2)
         player:AddNullCostume(Additionals.COSTUME_DEMON_RING)
-        AlreadyDemon=true
+        HasDemon=true
       end
         level= Game():GetLevel()
         level:AddAngelRoomChance(1)
