@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="robot" CreatedOn="22/05/2021 01:44:55" Version="106" Fps="30"/>
+	<Info CreatedBy="robot" CreatedOn="29/01/2022 14:20:17" Version="107" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="familiar\laserdrone.png" Id="0"/>
@@ -10,7 +10,7 @@
 		<Nulls/>
 		<Events/>
 	</Content>
-	<Animations DefaultAnimation="IdleDown">
+	<Animations DefaultAnimation="FloatDown">
 		<Animation Name="IdleDown" FrameNum="1" Loop="false">
 			<RootAnimation>
 				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
