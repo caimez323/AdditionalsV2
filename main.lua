@@ -1219,7 +1219,6 @@ local function onFamiliarUpdate(_,fam)
   local player = Isaac.GetPlayer(0)
   local vel = Vector(0,0)
   local pos = Vector(player.Position.X,player.Position.Y)
-  --fam:FollowPosition(player.Position)
   fam:FollowParent()
   if (fam.FrameCount%5 ==0) then
     local r = math.random(0,100)
@@ -1233,8 +1232,8 @@ end
 local function onInit(_,fam)
   local player = Isaac.GetPlayer(0)
   fam.IsFollower=true
+  fam:AddToFollowers()
 end
-
 
 Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, onInit, variant)
 Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE,onFamiliarUpdate, variant)
@@ -1277,18 +1276,14 @@ local function onFamiliarUpdate2(_,fam)
       damageL = 20
     end
     
-    --[[local laser1 = EntityLaser.ShootAngle(2,fam.Position,0,duration,Vector(0,0),player)
-    local laser2 = EntityLaser.ShootAngle(2,fam.Position,90,duration,Vector(0,0),player)
-    local laser3 = EntityLaser.ShootAngle(2,fam.Position,180,duration,Vector(0,0),player)
-    local laser4 = EntityLaser.ShootAngle(2,fam.Position,270,duration,Vector(0,0),player)--]]
-    local laser5 = EntityLaser.ShootAngle(typelas,fam.Position,45,duration,Vector(0,0),player)
-    laser5.CollisionDamage = damageL
-    local laser6 = EntityLaser.ShootAngle(typelas,fam.Position,135,duration,Vector(0,0),player)
-    laser6.CollisionDamage = damageL
-    local laser7 = EntityLaser.ShootAngle(typelas,fam.Position,225,duration,Vector(0,0),player)
-    laser7.CollisionDamage = damageL
-    local laser8 = EntityLaser.ShootAngle(typelas,fam.Position,315,duration,Vector(0,0),player)
-    laser8.CollisionDamage = damageL
+    local laser1 = EntityLaser.ShootAngle(typelas,fam.Position,45,duration,Vector(0,0),player)
+    laser1.CollisionDamage = damageL
+    local laser2 = EntityLaser.ShootAngle(typelas,fam.Position,135,duration,Vector(0,0),player)
+    laser2.CollisionDamage = damageL
+    local laser3 = EntityLaser.ShootAngle(typelas,fam.Position,225,duration,Vector(0,0),player)
+    laser3.CollisionDamage = damageL
+    local laser4 = EntityLaser.ShootAngle(typelas,fam.Position,315,duration,Vector(0,0),player)
+    laser4.CollisionDamage = damageL
   end
 end
 
