@@ -20,7 +20,6 @@ Additionals.COSTUME_WHITE_FLOWER= Isaac.GetCostumeIdByPath("gfx/characters/white
 Additionals.COSTUME_TRANSFORMATION_OPHIUSCUS = Isaac.GetCostumeIdByPath("gfx/characters/transformation_ophiuscus.anm2")
 
 --Reset some variables now
-local DJrestart = false
 local Zodiac_C = 0
 local Zodiac_T = false
 local Zodiac_TBS = false
@@ -35,8 +34,6 @@ local chancetospawnBikeeper= 38
 local chancetospawnSecretPassage= 39
 local OneRemain = false
 local GTNoDMG = true
-local e
-local b
 local Afterflyver = false
 local rangeBoost=0
 local AlreadyBothGrail = false
@@ -146,11 +143,8 @@ Additionals:AddCallback(ModCallbacks.MC_GET_CARD, Additionals.getCard);
 --COSTUMES AND RESET VARIABLES
 --This function is called each 0.5s
 function Additionals:onUpdate(player)
-local game = Game()
-  if (game:GetFrameCount() == 1 )then
+  if (game:GetFrameCount() == 1 )then -- First frame of a run, don't trigger on continue
     Isaac.ConsoleOutput("F1")
-    Zodiac_T=false
-    Zodiac_C = 0
     HasWhiteFlower = false
     HasDemonRing = false
     AlreadyDemon = false
@@ -162,7 +156,6 @@ local game = Game()
     GTNoDMG = true
     rangeBoost=0
     WzBoss = false
-    --Reset items that have an already
     timeA = 0
     timeB = 0
     AlreadyStart = false
@@ -171,24 +164,21 @@ local game = Game()
     AlreadyDemon = false
     AlreadyGrail =false
     AlreadyCursedGrail =false
-    if not DJrestart then -- When we leave the run
-      Zodiac_T=false
-      Zodiac_C = 0
-      HasAR=false
-      HasT=false
-      HasG=false
-      HasCR=false
-      HasCA=false
-      HasLE=false
-      HasV=false
-      HasLI=false
-      HasSC=false
-      HasSA=false
-      HasAQ=false
-      HasP=false
-      player.CanFly = false
-      DJrestart = true
-    end
+    
+    Zodiac_T=false
+    Zodiac_C = 0
+    HasAR=false
+    HasT=false
+    HasG=false
+    HasCR=false
+    HasCA=false
+    HasLE=false
+    HasV=false
+    HasLI=false
+    HasSC=false
+    HasSA=false
+    HasAQ=false
+    HasP=false
   end
   -- get frame count for Matches
   FlameTimeB=player.FrameCount 
@@ -1120,6 +1110,7 @@ end
 Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.S_StealerOnDamage)
 
 function Additionals:Upgrade()
+  
   
   if (math.random(0,1) == 0) then 
     if S_Stealer.Phantom.Damage+1 <= S_Stealer.Phantom.DamageCap then
