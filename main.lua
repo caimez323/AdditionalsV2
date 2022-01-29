@@ -150,6 +150,7 @@ Additionals:AddCallback(ModCallbacks.MC_GET_CARD, Additionals.getCard);
 function Additionals:onUpdate(player)
 local game = Game()
   if (game:GetFrameCount() == 1 )then
+    Isaac.ConsoleOutput("F1")
     Zodiac_T=false
     Zodiac_C = 0
     HasWhiteFlower = false
@@ -450,6 +451,19 @@ function Additionals:onEvaluateItems(player,cacheFlag)
       player.Luck = player.Luck + (StatGT.AddLuck *0.25)
     end
   end
+  
+  --Familiars Cache
+  
+  if cacheFlag == CacheFlag.CACHE_FAMILIARS then
+		local boxUses = player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS)
+		local FrozenItem = player:GetCollectibleNum(FrozenItemId)
+    local LaserItem = player:GetCollectibleNum(LaserDroneID)
+		local numFrozens = (FrozenItem > 0 and (FrozenItem + boxUses) or 0)
+		local numLaser = (LaserItem > 0 and (LaserItem + boxUses) or 0)
+		player:CheckFamiliar(variant, numFrozens, player:GetCollectibleRNG(FrozenItem), Isaac.GetItemConfig():GetCollectible(FrozenItem))
+		player:CheckFamiliar(variant1, numLaser, player:GetCollectibleRNG(LaserItem), Isaac.GetItemConfig():GetCollectible(LaserItem))
+  end
+  
 end
 Additionals:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, Additionals.onEvaluateItems)
 
@@ -619,54 +633,6 @@ function Additionals:GiveBonus()
     --Isaac.ConsoleOutput("\nBonus done\n")
 
 end
-
-
---Reset some others Variables at the initialisation of the player (like the count of the items needed for the transformation)
---IN REPENTANCE IT ALSO TRIGGER ON CONTINUE
-function Additionals:start()
-  --[[local vel = Vector(0,0)
-  local player = Isaac.GetPlayer(0)
-  --Reset items that have an already
-  Isaac.ConsoleOutput("Restart")
-  timeA = 0
-  timeB = 0
-  AlreadyStart = false
-  Zodiac_T=false
-  Zodiac_C = 0
-  Zodiac_TBF = false
-  AlreadyGaveFrozen = false
-  Zodiac_TBS = false
-  CountMore = -1
-  AlreadyProteins = false
-  AlreadyDemon = false
-  AlreadyGrail =false
-  AlreadyCursedGrail =false
-  if not DJrestart then
-  CountMore=-1
-  Zodiac_T=false
-  Zodiac_C = 0
-  HasAR=false
-  HasT=false
-  HasG=false
-  HasCR=false
-  HasCA=false
-  HasLE=false
-  HasV=false
-  HasLI=false
-  HasSC=false
-  HasSA=false
-  HasAQ=false
-  HasP=false
-  player.CanFly = false
-  DJrestart = true
-  end--]]
-end
-Additionals:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, Additionals.start)
-
-
-
-
-
 
 --Make sure everything is allright to restart a new initalisation
 function Additionals:onExit()
