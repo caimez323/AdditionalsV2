@@ -140,13 +140,10 @@ Additionals:AddCallback(ModCallbacks.MC_GET_CARD, Additionals.getCard);
 --COSTUMES AND RESET VARIABLES
 --This function is called each 0.5s
 function Additionals:onUpdate(player)
-  Isaac.RenderText(Zodiac_C,200,200,1,1,1,1)
-  
   
   if (game:GetFrameCount() == 1 )then -- First frame of a run, don't trigger on continue
     Isaac.ConsoleOutput("F1")
     HasWhiteFlower = false
-    HasDemonRing = false
     AlreadyDemon = false
     Afterflyver = false
     FlameTear = false
@@ -167,6 +164,7 @@ function Additionals:onUpdate(player)
     
     Zodiac_T=false
     Zodiac_C = 0
+    
     HasAR=false
     HasT=false
     HasG=false
@@ -183,15 +181,10 @@ function Additionals:onUpdate(player)
   -- get frame count for Matches
   FlameTimeB=player.FrameCount 
   --Applied costume if player haven't it yet and has the item
-  if not HasDemonRing and player:HasCollectible(DemonRingId) then
-    player:AddNullCostume(Additionals.COSTUME_DEMON_RING)
-    HasDemonRing = true
-  end
   if not HasWhiteFlower and player:HasCollectible(FlowerId) then
     player:AddNullCostume(Additionals.COSTUME_WHITE_FLOWER)
     HasWhiteFlower= true
   end
-  
   
   --A fix for adding wisp when use The fly-verter without soul hearts
   if player:HasCollectible(584) and Afterflyver and player:HasCollectible(flyverterId) then
@@ -267,8 +260,9 @@ function Additionals:onEvaluateItems(player,cacheFlag)
     end
 --DEMON RING
     if(player:HasCollectible(DemonRingId))then
-      if AlreadyDemon == false then
+      if not AlreadyDemon then
         player:AddBlackHearts(2)
+        player:AddNullCostume(Additionals.COSTUME_DEMON_RING)
         AlreadyDemon=true
       end
         level= Game():GetLevel()
