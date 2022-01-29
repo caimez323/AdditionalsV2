@@ -84,6 +84,30 @@ local BiKeeperId= Isaac.GetCardIdByName("BiKeeper")
 local SecretId = Isaac.GetCardIdByName("Secret Passage")
 
 
+DIRECTION_FLOAT_ANIM = {
+	[Direction.NO_DIRECTION] = "FloatDown", 
+	[Direction.LEFT] = "FloatLeft",
+	[Direction.UP] = "FloatUp",
+	[Direction.RIGHT] = "FloatRight",
+	[Direction.DOWN] = "FloatDown"
+}
+
+DIRECTION_SHOOT_ANIM = {
+	[Direction.NO_DIRECTION] = "FloatShootDown",
+	[Direction.LEFT] = "FloatShootRight",
+	[Direction.UP] = "FloatShootUp",
+	[Direction.RIGHT] = "FloatShootLeft",
+	[Direction.DOWN] = "FloatShootDown"
+}
+
+DIRECTION_VECTOR = {
+	[Direction.LEFT] = Vector(-1, 0),
+	[Direction.UP] = Vector(0, -1),
+	[Direction.RIGHT] = Vector(1, 0),
+	[Direction.DOWN] = Vector(0, 1)
+}
+
+
 
 local StatGT = {
       AddDamage = 0;
@@ -1167,6 +1191,10 @@ Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, Additionals.onInitPhantom
 
 function Additionals:onPhantomUpdate(phantom)
   local player = Isaac.GetPlayer(0)
+  local move_dir = player:GetMovementDirection()
+  local sprite = phantom:GetSprite()
+  local player_fire_direction = player:GetFireDirection()
+  sprite:Play(DIRECTION_FLOAT_ANIM[move_dir], false)
   if player:GetShootingJoystick():Length() > 0.1 and phantom.FireCooldown <= 0 then --the player shoot
     tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER,0,phantom.Position,player:GetShootingJoystick():Normalized()*14 + phantom.Velocity,phantom):ToTear()
     
@@ -1235,7 +1263,6 @@ local function onFamiliarUpdate(_,fam)
      if (r>30)then
       Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_WHITE, 0, fam.Position, Vector(0,0), e):ToEffect()
     end
-    
   end
 end
 
