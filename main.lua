@@ -50,8 +50,8 @@ TearVariant.DOOM_STARS = Isaac.GetEntityVariantByName("Doom_Stars")
 
 --Match each Item an Id
 local FrozenItemId = Isaac.GetItemIdByName("Frozen Body")
-local variant = Isaac.GetEntityVariantByName("frozenbody")
-local variant1 = Isaac.GetEntityVariantByName("LaserDrone")
+local frozenFam = Isaac.GetEntityVariantByName("frozenbody")
+local laserFam = Isaac.GetEntityVariantByName("LaserDrone")
 local LaserDroneID = Isaac.GetItemIdByName("Laser Drone")
 
 
@@ -456,8 +456,8 @@ function Additionals:onEvaluateItems(player,cacheFlag)
     local LaserItem = player:GetCollectibleNum(LaserDroneID)
 		local numFrozens = (FrozenItem > 0 and (FrozenItem + boxUses) or 0)
 		local numLaser = (LaserItem > 0 and (LaserItem + boxUses) or 0)
-		player:CheckFamiliar(variant, numFrozens, player:GetCollectibleRNG(FrozenItem), Isaac.GetItemConfig():GetCollectible(FrozenItem))
-		player:CheckFamiliar(variant1, numLaser, player:GetCollectibleRNG(LaserItem), Isaac.GetItemConfig():GetCollectible(LaserItem))
+		player:CheckFamiliar(frozenFam, numFrozens, player:GetCollectibleRNG(FrozenItem), Isaac.GetItemConfig():GetCollectible(FrozenItem))
+		player:CheckFamiliar(laserFam, numLaser, player:GetCollectibleRNG(LaserItem), Isaac.GetItemConfig():GetCollectible(LaserItem))
   end
   
 end
@@ -1235,8 +1235,8 @@ local function onInit(_,fam)
   fam:AddToFollowers()
 end
 
-Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, onInit, variant)
-Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE,onFamiliarUpdate, variant)
+Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, onInit, frozenFam)
+Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE,onFamiliarUpdate, frozenFam)
 
 --Caracteristics of the familiar on update
 local function onFamiliarUpdate2(_,fam)
@@ -1287,4 +1287,4 @@ local function onFamiliarUpdate2(_,fam)
   end
 end
 
-Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE,onFamiliarUpdate2, variant1)
+Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE,onFamiliarUpdate2, laserFam)
