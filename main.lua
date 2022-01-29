@@ -100,14 +100,6 @@ DIRECTION_SHOOT_ANIM = {
 	[Direction.DOWN] = "FloatShootDown"
 }
 
-DIRECTION_VECTOR = {
-	[Direction.LEFT] = Vector(-1, 0),
-	[Direction.UP] = Vector(0, -1),
-	[Direction.RIGHT] = Vector(1, 0),
-	[Direction.DOWN] = Vector(0, 1)
-}
-
-
 
 local StatGT = {
       AddDamage = 0;
