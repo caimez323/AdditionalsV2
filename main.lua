@@ -1194,7 +1194,13 @@ function Additionals:onPhantomUpdate(phantom)
   local move_dir = player:GetMovementDirection()
   local sprite = phantom:GetSprite()
   local player_fire_direction = player:GetFireDirection()
-  sprite:Play(DIRECTION_FLOAT_ANIM[move_dir], false)
+  if player_fire_direction == Direction.NO_DIRECTION then
+    sprite:Play(DIRECTION_FLOAT_ANIM[move_dir], false)
+  else
+    local animDirection = player_fire_direction
+    sprite:Play(DIRECTION_SHOOT_ANIM[animDirection], false)
+  end
+  
   if player:GetShootingJoystick():Length() > 0.1 and phantom.FireCooldown <= 0 then --the player shoot
     tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER,0,phantom.Position,player:GetShootingJoystick():Normalized()*14 + phantom.Velocity,phantom):ToTear()
     
