@@ -25,7 +25,6 @@ local Zodiac = {
 
 local chanceToReplace = 50
 
-local rangeBoost=0
 local AlreadyBothGrail = false
 local WzBoss = false
 local removeNextTears = false
@@ -334,11 +333,7 @@ function Additionals:onEvaluateItems(player,cacheFlag)
           player.MaxFireDelay = player.MaxFireDelay-1.5
       end
       if cacheFlag == CacheFlag.CACHE_RANGE then
-          --player.TearFallingSpeed = player.TearFallingSpeed-0.5
           rangeBoost = rangeBoost -5
-          --player.TearHeight = player.TearHeight -5
-          
-          
       end
     end
     
