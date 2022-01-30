@@ -24,8 +24,7 @@ local Zodiac = {
   }
 
 local chanceToReplace = 50
-local OneRemain = false
-local GTNoDMG = true
+
 local rangeBoost=0
 local AlreadyBothGrail = false
 local WzBoss = false
@@ -150,7 +149,7 @@ function Additionals:onUpdate(player)
     FlameTear = false
     FlameTimeA=0
     FlameTimeB=0
-    OneRemain = false
+    AtLeastOne = false
     GTNoDMG = true
     rangeBoost=0
     WzBoss = false
@@ -438,13 +437,9 @@ Additionals:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, Additionals.onEvaluateIt
 function Additionals:tearUpdate(player)
     local room = Game():GetRoom()
     
-    if room:GetAliveEnemiesCount() > 0 then
-      OneRemain = true
-    end
-
-    if OneRemain and room:GetAliveEnemiesCount() == 0 and player:HasCollectible(GiveTakeID) then --When we clear a room
-      if GTNoDMG then
-        local limStage = Game():GetLevel():GetStage()+1 
+    if AtLeastOne and GTNoDMG and room:GetAliveEnemiesCount() == 0 and player:HasCollectible(GiveTakeID) then --When we clear a room
+        --Chance to give bonus
+        local limStage = game:GetLevel():GetStage()+1 
         if limStage%2 == 1 then
           limStage = limStage -1
         end
@@ -452,8 +447,7 @@ function Additionals:tearUpdate(player)
         if math.random(1,limStage) == 1 then 
           Additionals:GiveBonus()
         end
-      end
-      OneRemain = false
+      AtLeastOne = false
       
       if WzBoss then
         Additionals:GiveBonus()
@@ -640,7 +634,7 @@ local pos = Vector(player.Position.X,player.Position.Y)
     end
   end
   
-  if player:HasCollectible(GiveTakeID) and source ~=nil then
+  if player:HasCollectible(GiveTakeID) and source ~=nil then -- G&T The player took a damage
     GTNoDMG = false
   end
   
@@ -838,17 +832,18 @@ function Additionals:use_Trans()
 end
 
 Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_Trans, TransfusionId)
---When need to reset the Dmg while entering in new room and reset max
---I also reset the timer for Matches since it's the same CallBack
+--Reset on new Room
 function Additionals:newRoom()
   local vel = Vector(0,0)
   local player = Isaac.GetPlayer(0)
   local pos = Vector(player.Position.X,player.Position.Y)
-  --Isaac.ConsoleOutput(Game():GetStagesWithoutDamage())
-  OneRemain = false
+  
+  local room = game:GetRoom() -- G&T
+  AtLeastOne = room:GetAliveEnemiesCount ()>0  -- G&T
   GTNoDMG = true
-  player.Damage = player.Damage-(max)
-  max = 0
+  
+  player.Damage = player.Damage-(max) -- Transfusion
+  max = 0 -- Transfusion
   --Matches reset
   FlameTimeA=0
   FlameTimeB=0
