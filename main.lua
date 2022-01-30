@@ -26,7 +26,6 @@ local Zodiac = {
 local chanceToReplace = 50
 
 local AlreadyBothGrail = false
-local WzBoss = false
 local removeNextTears = false
 
 
@@ -145,13 +144,16 @@ function Additionals:onUpdate(player)
     
     TryFlyVerter = false
     
+    GTNoDMG = true
+    BossRoom = false
+    
     FlameTear = false
     FlameTimeA=0
     FlameTimeB=0
     AtLeastOne = false
-    GTNoDMG = true
+    
     rangeBoost=0
-    WzBoss = false
+    
     timeRevengeA = 0
     timeRevengeB = 0
     AlreadyStart = false
@@ -444,10 +446,10 @@ function Additionals:tearUpdate(player)
         end
       AtLeastOne = false
       
-      if WzBoss then
+      if BossRoom then
         Additionals:GiveBonus()
         Additionals:GiveBonus()
-        WzBoss = false
+        BossRoom = false
       end
     end
     
@@ -848,7 +850,7 @@ function Additionals:newRoom()
     local TabEnemies = Isaac.GetRoomEntities()
     for _, entity in pairs(TabEnemies) do
       if entity:IsVulnerableEnemy() and entity:ToNPC():IsBoss() then
-        WzBoss = true
+        BossRoom = true
       end
     end
   end
