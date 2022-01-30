@@ -134,33 +134,37 @@ function Additionals:onUpdate(player)
   if game:GetFrameCount() == 1 then -- First frame of a run, don't trigger on continue
     Isaac.ConsoleOutput("F1")
     
-    HasWhiteFlower = false
+    HasWhiteFlower = false -- Apply Costumes
     HasDemon = false
     
-    max = 0
+    max = 0 --Transfusion
     
-    timeRevengeA =0
+    timeRevengeA =0 -- Revenge
     timeRevengeB=0
     
-    TryFlyVerter = false
+    TryFlyVerter = false --FlyVerter
     
+    AtLeastOne = false -- Give and Take
     GTNoDMG = true
     BossRoom = false
+    
+    rangeBoost=0 --Change range with Squid ink
+    
+    timeRevengeA = 0 --Revenge
+    timeRevengeB = 0
     
     FlameTear = false
     FlameTimeA=0
     FlameTimeB=0
-    AtLeastOne = false
     
-    rangeBoost=0
     
-    timeRevengeA = 0
-    timeRevengeB = 0
+    
+    
     AlreadyStart = false
     AlreadyBothGrail = false
     AlreadyProteins = false
     
-    Zodiac.Transformed=false
+    Zodiac.Transformed=false -- Zodiac
     Zodiac.Count = 0
     
     HasAR=false
