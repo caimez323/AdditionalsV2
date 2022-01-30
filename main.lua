@@ -23,11 +23,9 @@ local Zodiac = {
   ToBeStat = false,
   }
 
-
 local chanceToReplace = 50
 local OneRemain = false
 local GTNoDMG = true
-local Afterflyver = false
 local rangeBoost=0
 local AlreadyBothGrail = false
 local WzBoss = false
@@ -97,6 +95,19 @@ local StatGT = {
   }
 
 
+--To spawn the customs cards, we look for a spawned card then add a chance to replace it
+function Additionals:getCard(rng,current,playing,runes,onlyrunes)
+  local randomcardid1 = rng:RandomInt(chanceToReplace)
+  if randomcardid1 == 1 and not onlyrunes and current ~= Card.CARD_CHAOS then 
+    return BiKeeperId
+  end
+  local randomcardid2 = rng:RandomInt(chanceToReplace);
+  if randomcardid2 == 1 and not onlyrunes and current ~= Card.CARD_CHAOS then 
+    return SecretId
+  end
+end
+Additionals:AddCallback(ModCallbacks.MC_GET_CARD, Additionals.getCard);
+
 --Bikeeper and Secret Passage card
 function Additionals:onBikeeper(...)
    Isaac.ExecuteCommand("goto s.shop.5")
@@ -118,26 +129,12 @@ Additionals:AddCallback(ModCallbacks.MC_USE_CARD, Additionals.onSecret, SecretId
 Additionals:AddCallback(ModCallbacks.MC_USE_CARD, Additionals.onBikeeper, BiKeeperId)
 
 
---To spawn the customs cards, we look for a spawned card then add a chance to replace it
-function Additionals:getCard(rng,current,playing,runes,onlyrunes)
-  local randomcardid1 = rng:RandomInt(chanceToReplace)
-  if randomcardid1 == 1 and not onlyrunes and current ~= Card.CARD_CHAOS then 
-    return BiKeeperId
-  end
-  local randomcardid2 = rng:RandomInt(chanceToReplace);
-  if randomcardid2 == 1 and not onlyrunes and current ~= Card.CARD_CHAOS then 
-    return SecretId
-  end
-end
-Additionals:AddCallback(ModCallbacks.MC_GET_CARD, Additionals.getCard);
-
-
 
 --COSTUMES AND RESET VARIABLES
 --This function is called each 0.5s
 function Additionals:onUpdate(player)
   
-  if (game:GetFrameCount() == 1 )then -- First frame of a run, don't trigger on continue
+  if game:GetFrameCount() == 1 then -- First frame of a run, don't trigger on continue
     Isaac.ConsoleOutput("F1")
     
     HasWhiteFlower = false
@@ -147,8 +144,9 @@ function Additionals:onUpdate(player)
     
     timeRevengeA =0
     timeRevengeB=0
-
-    Afterflyver = false
+    
+    TryFlyVerter = false
+    
     FlameTear = false
     FlameTimeA=0
     FlameTimeB=0
@@ -187,14 +185,14 @@ function Additionals:onUpdate(player)
   end
   
   --A fix for adding wisp when use The fly-verter without soul hearts
-  if player:HasCollectible(584) and Afterflyver and player:HasCollectible(flyverterId) then
+  
+  if player:HasCollectible(584) and player:HasCollectible(flyverterId) and TryFlyVerter then
       local entwisp = Isaac.FindByType(3,206,-1)
       if #entwisp>0 then
         entwisp[1]:Remove()
-        Afterflyver = false
       end
+      TryFlyVerter = false
   end
-  
 end
 Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, Additionals.onUpdate)
 
@@ -953,8 +951,9 @@ function Additionals:use_flyverter()
     else
       player:AddBlueFlies(3,pos, player)
     end
-  else  
-    Afterflyver = true
+    
+  else
+    TryFlyVerter = true --fake activation
   end
   
 
