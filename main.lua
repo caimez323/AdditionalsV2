@@ -11,7 +11,6 @@
 local Additionals = RegisterMod("AdditionalsV2",1)
 local game = Game()
 local hud = Game():GetHUD()
-
 --Set the costumes
 Additionals.COSTUME_DEMON_RING= Isaac.GetCostumeIdByPath("gfx/characters/demon_ring.anm2")
 Additionals.COSTUME_WHITE_FLOWER= Isaac.GetCostumeIdByPath("gfx/characters/white_flower.anm2")
@@ -24,10 +23,8 @@ local Zodiac = {
   ToBeStat = false,
   }
 
-local AlreadyCursedGrail =false
-local max = 0
-local timeA =0
-local timeB=0
+
+
 local chancetospawnBikeeper= 38
 local chancetospawnSecretPassage= 39
 local OneRemain = false
@@ -57,7 +54,7 @@ local TransfusionId = Isaac.GetItemIdByName("Transfusion")
 local DemonRingId = Isaac.GetItemIdByName("Demon Ring")
 local StarterPackId = Isaac.GetItemIdByName("Starter pack")
 local TmpId = Isaac.GetItemIdByName("Not-Glass Cannon")
-local EnoughId = Isaac.GetItemIdByName("Revenge")
+local RevengeId = Isaac.GetItemIdByName("Revenge")
 local InkId = Isaac.GetItemIdByName("Squid Ink")
 local FlowerId = Isaac.GetItemIdByName("White Flower")
 local MatchesId= Isaac.GetItemIdByName("Matches")
@@ -148,6 +145,11 @@ function Additionals:onUpdate(player)
     HasWhiteFlower = false
     HasDemon = false
     
+    max = 0
+    
+    timeRevengeA =0
+    timeRevengeB=0
+
     Afterflyver = false
     FlameTear = false
     FlameTimeA=0
@@ -156,12 +158,11 @@ function Additionals:onUpdate(player)
     GTNoDMG = true
     rangeBoost=0
     WzBoss = false
-    timeA = 0
-    timeB = 0
+    timeRevengeA = 0
+    timeRevengeB = 0
     AlreadyStart = false
     AlreadyBothGrail = false
     AlreadyProteins = false
-    AlreadyCursedGrail =false
     
     Zodiac.Transformed=false
     Zodiac.Count = 0
@@ -214,7 +215,7 @@ __eidItemDescriptions[DemonRingId] = "All devil deals are now Angel rooms"
 __eidItemDescriptions[FrozenItemId] = "Spawns a familiar that slows enemies#Gives 2 soulhearts"
 __eidItemDescriptions[StarterPackId] = "Gives 10 coins, gold bomb, gold key, an HP up, a soulheart and +1 luck and +0.2 speed"
 __eidItemDescriptions[TmpId] = "Dmg up but slooooooow down a bit (+10dmg and dmg*1.3)"
-__eidItemDescriptions[EnoughId] = "Has a chance to damage all enemies in the room when taking a lot of damage"
+__eidItemDescriptions[RevengeId] = "Has a chance to damage all enemies in the room when taking a lot of damage"
 __eidItemDescriptions[TransfusionId] = "More enemies, More stats !"
 __eidItemDescriptions[InkId] = "+0.75 damage, +2 fire rate, range down#Has a chance to create creep with your tears"
 __eidItemDescriptions[FlowerId] = "+ 4 soulhearts"
@@ -612,44 +613,34 @@ Additionals:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT,Additionals.onExit)
 
 --This part detect if the player take a damage
 --If he has the item, add a chance to not take the damage (return false) and damage all enemies in room if the framecount between 2 damages was close
---ENOUGH !
-function Additionals:Ennauf(entity, dmgAmount, dmgFlag, source, dmgCountDownFrames)
-local vel = Vector(0,0)
+
+function Additionals:onDamageRevenge(target, dmgAmount, dmgFlag, source, dmgCountDownFrames)
 local player = Isaac.GetPlayer(0)
 local pos = Vector(player.Position.X,player.Position.Y)
-local timerCount
 
-  if(player:HasCollectible(EnoughId) and source ~=nil) then
-    if timeA ==0 then
-        timeA = player.FrameCount
-        return true;
-    elseif timeA ~=0 then
-        timeB = player.FrameCount
+  if(player:HasCollectible(RevengeId) and source ~=nil) then
+    if timeRevengeA ==0 then
+        timeRevengeA = player.FrameCount
+        return true
+    elseif timeRevengeA ~=0 then
+        timeRevengeB = player.FrameCount
     end
-    --debugText=timeA ..  "," .. timeB .. "," ..timeB-timeA
-    if ((timeB - timeA) <=75) then
-      timerCount = true
-    else
-      timeA = 0
-      return true
-    end
-    if(timerCount) then
-      timeA=0
-      timeB=0
-      timerCount=false
-      r = math.random(1,2)
-      if r==1 then
-        local entities = Isaac.GetRoomEntities()
-        for i = 1, #entities do
-          if(entities[i]:IsVulnerableEnemy()) then
-              entities[ i ]:TakeDamage(30, 0,source,0)
+
+    if ((timeRevengeB - timeRevengeA) <=75) then
+        timeRevengeA=0
+        if math.random(1,2) ==1 then
+          local entities = Isaac.GetRoomEntities()
+          for i = 1, #entities do
+            if(entities[i]:IsVulnerableEnemy()) then
+              entities[ i ]:TakeDamage(30, 0,player,0)
+            end
           end
+          player:StopExtraAnimation() 
+          player:AnimateCollectible(RevengeId, "UseItem", "PlayerPickup")
+          player:AddSoulHearts(2)
+          return false
         end
-        player:StopExtraAnimation() 
-        player:AnimateCollectible(EnoughId, "UseItem", "PlayerPickup")
-        player:AddSoulHearts(2)
-      return false
-      end
+        return true
     end
   end
   
@@ -658,12 +649,11 @@ local timerCount
   end
   
 end
-Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.Ennauf,EntityType.ENTITY_PLAYER)
+Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.onDamageRevenge,EntityType.ENTITY_PLAYER)
 
 
 function Additionals:OnDamage(entity, dmgAmount, dmgFlag, source, dmgCountDownFrames)
   if source.Type == EntityType.ENTITY_TEAR and source.Variant == TearVariant.DARK_STARS then
-    --if math.random(0,2) == 0 then
       for _, entity in pairs(Isaac.GetRoomEntities()) do
           if entity.Type == EntityType.ENTITY_TEAR then
             local TearData = entity:GetData()
@@ -672,10 +662,8 @@ function Additionals:OnDamage(entity, dmgAmount, dmgFlag, source, dmgCountDownFr
               local enemiesRad = Isaac.FindInRadius(tear.Position,120,EntityPartition.ENEMY)
               if #enemiesRad>1 then
                 local enemy1pos = enemiesRad[2].Position
-                --player:FireTechLaser(pos, LaserOffset.LASER_MOMS_EYE_OFFSET, enemy1pos-pos,0,0)
                 local laser = EntityLaser.ShootAngle(2,tear.Position,(enemy1pos-tear.Position):GetAngleDegrees(),1,Vector(0,0),player)
                 laser.CollisionDamage = player.Damage * 0.3
-            --  end
             end
           end
       end
