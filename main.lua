@@ -24,9 +24,7 @@ local Zodiac = {
   }
 
 
-
-local chancetospawnBikeeper= 38
-local chancetospawnSecretPassage= 39
+local chanceToReplace = 50
 local OneRemain = false
 local GTNoDMG = true
 local Afterflyver = false
@@ -120,13 +118,13 @@ Additionals:AddCallback(ModCallbacks.MC_USE_CARD, Additionals.onSecret, SecretId
 Additionals:AddCallback(ModCallbacks.MC_USE_CARD, Additionals.onBikeeper, BiKeeperId)
 
 
---To spawn the customs cards, we search for a spawn card then add a chance to replace it
+--To spawn the customs cards, we look for a spawned card then add a chance to replace it
 function Additionals:getCard(rng,current,playing,runes,onlyrunes)
-  local randomcardid1 = rng:RandomInt(chancetospawnBikeeper)
+  local randomcardid1 = rng:RandomInt(chanceToReplace)
   if randomcardid1 == 1 and not onlyrunes and current ~= Card.CARD_CHAOS then 
     return BiKeeperId
   end
-  local randomcardid2 = rng:RandomInt(chancetospawnSecretPassage);
+  local randomcardid2 = rng:RandomInt(chanceToReplace);
   if randomcardid2 == 1 and not onlyrunes and current ~= Card.CARD_CHAOS then 
     return SecretId
   end
