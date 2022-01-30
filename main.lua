@@ -153,13 +153,15 @@ function Additionals:onUpdate(player)
     timeRevengeA = 0 --Revenge
     timeRevengeB = 0
     
-    FlameTear = false
+    AlreadyBothGrail = false--Grails Transformations
+    
+    --Matches
     FlameTimeA=0
     FlameTimeB=0
     
     
     AlreadyStart = false
-    AlreadyBothGrail = false
+    
     AlreadyProteins = false
     
     Zodiac.Transformed=false -- Zodiac
@@ -178,8 +180,7 @@ function Additionals:onUpdate(player)
     HasAQ=false
     HasP=false
   end
-  -- get frame count for Matches
-  FlameTimeB=player.FrameCount 
+
   --Applied costume if player haven't it yet and has the item
   if not HasWhiteFlower and player:HasCollectible(FlowerId) then
     player:AddNullCostume(Additionals.COSTUME_WHITE_FLOWER)
@@ -496,17 +497,16 @@ function Additionals:tearUpdate(player)
     end
     
     --MATCHES
-    --FlameTear correspond to if the item is still on use (FrameA-FrameB)
-    if(FlameTear and FlameTimeB-FlameTimeA<300)then
-      for _, entity in pairs(Isaac.GetRoomEntities()) do
-        if entity.Type == EntityType.ENTITY_TEAR then
-          local Matches_Tear = entity:ToTear()
-          Matches_Tear.TearFlags = TearFlags.TEAR_BURN
+    if player:HasCollectible(MatchesId) then
+      FlameTimeB=player.FrameCount 
+      if(FlameTimeB-FlameTimeA<300)then
+        for _, entity in pairs(Isaac.GetRoomEntities()) do
+          if entity.Type == EntityType.ENTITY_TEAR then
+            local Matches_Tear = entity:ToTear()
+            Matches_Tear.TearFlags = TearFlags.TEAR_BURN
+          end
         end
       end
-    end
-    if((FlameTimeB-FlameTimeA)>300) then
-      FlameTear=false
     end
     
     --Divine Grail
@@ -763,8 +763,8 @@ function Additionals:use_Matches()
   local vel = Vector(0,0)
   local player = Isaac.GetPlayer(0)
   local pos = Vector(player.Position.X,player.Position.Y)
-  FlameTear=true
   FlameTimeA=player.FrameCount
+  FlameTimeB=FlameTimeA
   player:AnimateCollectible(MatchesId, "UseItem", "PlayerPickup")
     for _, entity in pairs(Isaac.GetRoomEntities()) do
       Matches_TearData = entity:GetData()
@@ -842,10 +842,10 @@ function Additionals:newRoom()
   
   player.Damage = player.Damage-(max) -- Transfusion
   max = 0 -- Transfusion
+  
   --Matches reset
   FlameTimeA=0
   FlameTimeB=0
-  FlameTear=false
   
   if player:HasCollectible(GiveTakeID) then
     local TabEnemies = Isaac.GetRoomEntities()
