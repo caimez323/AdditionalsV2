@@ -10,7 +10,7 @@
 --Settings for the mod
 local Additionals = RegisterMod("AdditionalsV2",1)
 local game = Game()
-local hud = Game():GetHUD()
+local hud = game:GetHUD()
 --Set the costumes
 Additionals.COSTUME_DEMON_RING= Isaac.GetCostumeIdByPath("gfx/characters/demon_ring.anm2")
 Additionals.COSTUME_WHITE_FLOWER= Isaac.GetCostumeIdByPath("gfx/characters/white_flower.anm2")
@@ -156,8 +156,6 @@ function Additionals:onUpdate(player)
     FlameTear = false
     FlameTimeA=0
     FlameTimeB=0
-    
-    
     
     
     AlreadyStart = false
@@ -378,7 +376,6 @@ function Additionals:onEvaluateItems(player,cacheFlag)
   if (player:HasCollectible(CursedGrailId) and player:HasCollectible(DivineGrailId)) and not AlreadyBothGrail then
       player:StopExtraAnimation() 
       SFXManager():Play(SoundEffect.SOUND_POWERUP_SPEWER, 0.9, 0, false, 1)
-      local hud = Game():GetHUD()
       hud:ShowItemText("You are the power !!","", false)
       player:AddBlackHearts(4)
       AlreadyBothGrail= true
