@@ -25,9 +25,6 @@ local Zodiac = {
 
 local chanceToReplace = 50
 
-local AlreadyBothGrail = false
-local removeNextTears = false
-
 
 TearVariant.STARS = Isaac.GetEntityVariantByName("Stars")
 TearVariant.DARK_STARS = Isaac.GetEntityVariantByName("Dark_Stars")
@@ -179,6 +176,8 @@ function Additionals:onUpdate(player)
     HasSA=false
     HasAQ=false
     HasP=false
+    
+    removeNextTears = false -- Soul Stealer
   end
 
   --Applied costume if player haven't it yet and has the item
