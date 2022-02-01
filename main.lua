@@ -24,6 +24,7 @@ local Zodiac = {
   }
 
 local chanceToReplace = 50
+local max = 0
 
 
 TearVariant.STARS = Isaac.GetEntityVariantByName("Stars")
@@ -129,7 +130,6 @@ Additionals:AddCallback(ModCallbacks.MC_USE_CARD, Additionals.onBikeeper, BiKeep
 function Additionals:onUpdate(player)
   
   if game:GetFrameCount() == 1 then -- First frame of a run, don't trigger on continue
-    Isaac.ConsoleOutput("F1")
     
     HasWhiteFlower = false -- Apply Costumes
     HasDemon = false
@@ -155,7 +155,6 @@ function Additionals:onUpdate(player)
     --Matches
     FlameTimeA=0
     FlameTimeB=0
-    
     
     AlreadyStart = false
     
