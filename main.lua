@@ -1179,6 +1179,12 @@ local function onFamiliarUpdate(_,fam)
   local player = Isaac.GetPlayer(0)
   local vel = Vector(0,0)
   local pos = Vector(player.Position.X,player.Position.Y)
+  
+  local move_dir = player:GetMovementDirection()
+  local sprite = fam:GetSprite()
+  
+  sprite:Play(DIRECTION_FLOAT_ANIM[move_dir], false)
+  
   fam:FollowParent()
   if (fam.FrameCount%5 ==0) then
     local r = math.random(0,100)
