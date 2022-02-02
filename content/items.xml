@@ -18,7 +18,7 @@
   <active  quality="2" maxcharges ="4" descritpion="FIRE !" gfx="matches.png" name="Matches" />
   <active  quality="1" maxcharges= "4" description="Suck their strength !" gfx="transfusion.png" name="Transfusion" devilprice="1"/>
   <active  quality="2" maxcharges ="5" description="The path to darkness opens !" gfx="hells_gate.png" name="Hell's Gate" devilprice="1"/>
-  <active  quality="2" maxcharges ="0" description="Call them" gfx="flyverter.png" name="The Fly-verter" devilprice="1"/>
+  <active  quality="2" maxcharges ="0" description="My life is flies" gfx="flyverter.png" name="The Fly-verter" devilprice="1"/>
   <active  quality="2" maxcharges="2" description="I saw a ghost ?" gfx="soul_stealer.png" name="Soul Stealer" />
  </items>
  
