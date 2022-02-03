@@ -1,7 +1,6 @@
 <items gfxroot="gfx/items/" version="1">
 	<passive  quality="2" cache="damage speed" name="Proteins" description="A little boost for you" maxhearts="2" hearts="99" gfx="proteins.png"/>
 	<passive  quality="3" quality="" cache="all" description="Confess yours sins ! Make a pact !" gfx="demon_ring.png" name="Demon Ring" devilprice="1" special="true"/>
-  <passive  quality="2" cache = "damage speed firedelay" description="I wanna be a tank !" gfx="cannon.png" name="Not-Glass Cannon" devilprice="1"/>
   <passive  quality="3" cache="luck speed" description ="A new beginning !" gfx="starter_pack.png" name ="Starter pack" maxhearts="2" hearts="99" soulhearts="2"/>
   <passive  quality="3" description="ENOUGH !!!" gfx="Revenge.png" name="Revenge" />
   <passive  quality="2" cache="damage range firedelay" description ="Let's recolour the world !" gfx="squid_ink.png" name = "Squid Ink" />

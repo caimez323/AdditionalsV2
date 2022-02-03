@@ -44,7 +44,6 @@ local Wind = Isaac.GetItemIdByName("Freezy Wind")
 local TransfusionId = Isaac.GetItemIdByName("Transfusion")
 local DemonRingId = Isaac.GetItemIdByName("Demon Ring")
 local StarterPackId = Isaac.GetItemIdByName("Starter pack")
-local TmpId = Isaac.GetItemIdByName("Not-Glass Cannon")
 local RevengeId = Isaac.GetItemIdByName("Revenge")
 local InkId = Isaac.GetItemIdByName("Squid Ink")
 local FlowerId = Isaac.GetItemIdByName("White Flower")
@@ -211,7 +210,6 @@ __eidItemDescriptions[Proteins] = "Hp up, +0.1 speed +1 damage#Heal you#Charge u
 __eidItemDescriptions[DemonRingId] = "All devil deals are now Angel rooms"
 __eidItemDescriptions[FrozenItemId] = "Spawns a familiar that slows enemies#Gives 2 soulhearts"
 __eidItemDescriptions[StarterPackId] = "Gives 10 coins, gold bomb, gold key, an HP up, a soulheart and +1 luck and +0.2 speed"
-__eidItemDescriptions[TmpId] = "Dmg up but slooooooow down a bit (+10dmg and dmg*1.3)"
 __eidItemDescriptions[RevengeId] = "Has a chance to damage all enemies in the room when taking a lot of damage"
 __eidItemDescriptions[TransfusionId] = "More enemies, More stats !"
 __eidItemDescriptions[InkId] = "+0.75 damage, +2 fire rate, range down#Has a chance to create creep with your tears"
@@ -280,21 +278,6 @@ function Additionals:onEvaluateItems(player,cacheFlag)
         Isaac.Spawn(EntityType.ENTITY_PICKUP,PickupVariant.PICKUP_BOMB,BombSubType.BOMB_GOLDEN,Game():GetLevel():GetCurrentRoom():FindFreePickupSpawnPosition(pos, 0, false, true),vel,player)
         AlreadyStart = true
       end
-    end
-
---Glass Cannon
-    if(player:HasCollectible(TmpId)) then
-     player.TearColor= Color(200,15,100,100,200,0,-1)
-        if cacheFlag == CacheFlag.CACHE_DAMAGE then
-          player.Damage = player.Damage + 10;
-          player.Damage = math.ceil(player.Damage*1.3)
-        end
-        if cacheFlag == CacheFlag.CACHE_SPEED then
-          player.MoveSpeed = player.MoveSpeed-0.5
-        end
-        if cacheFlag == CacheFlag.CACHE_FIREDELAY then
-          player.MaxFireDelay = player.MaxFireDelay+20;
-        end
     end
     
 --Super Damage
