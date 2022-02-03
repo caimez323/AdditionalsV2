@@ -908,6 +908,11 @@ function Additionals:newRoom()
       end
     end
   end
+  
+  --Soul stealer fix to respawn entity
+  if S_Stealer.Active then
+    S_Stealer.Entity = Isaac.Spawn(EntityType.ENTITY_EFFECT,S_Stealer.EntityVariant,0,player.Position,Vector(0,0), player) --spawn entity that the player hold
+  end
 end
 
 Additionals:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,Additionals.newRoom)
