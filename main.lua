@@ -597,7 +597,6 @@ local pos = Vector(player.Position.X,player.Position.Y)
     
     if ((timeRevengeB - timeRevengeA) <=75) then
         timeRevengeA=0
-        Isaac.ConsoleOutput("try")
         if math.random(1,2) ==1 then
           local entities = Isaac.GetRoomEntities()
           for i = 1, #entities do
