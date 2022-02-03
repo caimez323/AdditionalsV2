@@ -329,13 +329,13 @@ function Additionals:onUpdate(player)
           local TearData = entity:GetData()
           local tear = entity:ToTear()
           if(tear.Height >=-5 or tear:CollidesWithGrid()) and TearData.Cursed_Grail == nil and entity.SpawnerType == EntityType.ENTITY_PLAYER then
-            --if math.random(0,2) == 0 then
+            if math.random(0,2) == 0 then
               local enemiesRad = Isaac.FindInRadius(tear.Position,120,EntityPartition.ENEMY)
               if #enemiesRad>0 then
                 local enemy1pos = enemiesRad[1].Position
                 local laser = EntityLaser.ShootAngle(2,tear.Position,(enemy1pos-tear.Position):GetAngleDegrees(),1,Vector(0,0),player)
                 laser.CollisionDamage = player.Damage * 0.3 *0.5
-              --end
+              end
             end
           end
         end
