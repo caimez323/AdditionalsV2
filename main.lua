@@ -360,28 +360,24 @@ end
 Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, Additionals.onUpdate)
 
 
-
-
-
-
 -- External Item Descriptions support.
 if not __eidItemDescriptions then
   __eidItemDescriptions = {}
 end
 --Part is to make the mod compatible with eid
 __eidItemDescriptions[Proteins] = "Hp up, +0.1 speed +1 damage#Heal you#Charge up your item"
-__eidItemDescriptions[DemonRingId] = "All devil deals are now Angel rooms"
-__eidItemDescriptions[FrozenItemId] = "Spawns a familiar that slows enemies#Gives 2 soulhearts"
-__eidItemDescriptions[StarterPackId] = "Gives 10 coins, gold bomb, gold key, an HP up, a soulheart and +1 luck and +0.2 speed"
-__eidItemDescriptions[RevengeId] = "Has a chance to damage all enemies in the room when taking a lot of damage"
-__eidItemDescriptions[TransfusionId] = "More enemies, More stats !"
-__eidItemDescriptions[InkId] = "+0.75 damage, +2 fire rate, range down#Has a chance to create creep with your tears"
-__eidItemDescriptions[FlowerId] = "+ 4 soulhearts"
+__eidItemDescriptions[DemonRingId] = "All devil deals are now Angel rooms#+1 Black heart"
+__eidItemDescriptions[FrozenItemId] = "Spawns a familiar that slows enemies#Gives 1 soulheart"
+__eidItemDescriptions[StarterPackId] = "Gives 10 coins, gold bomb, gold key, HP up, +1 soulheart and +1 luck and +0.2 speed"
+__eidItemDescriptions[RevengeId] = "Has a chance to damage all enemies in the room when taking a lot of damage and add half soulheart"
+__eidItemDescriptions[TransfusionId] = "More enemies, More stats !#+1 damage for each enemy in the room"
+__eidItemDescriptions[InkId] = "+0.75 damage, +2 fire rate, range down#Has a chance to create creep under your tears"
+__eidItemDescriptions[FlowerId] = "+4 soulhearts"
 __eidItemDescriptions[MatchesId] = "Burns all enemies#Your tears and your familiars' burn enemies"
 __eidItemDescriptions[GateId] = "Spawns a demon-boss ally for the room"
-__eidItemDescriptions[SuperDamageId] = "Damage, Speed and Shot-Speed up#+Half a soul heart#Deal bonus damages against bosses (even more if champions)"
+__eidItemDescriptions[SuperDamageId] = "Damage, Speed and Shot-Speed up#+Half soulheart#Deal bonus damages against bosses (even more if champions)"
 __eidItemDescriptions[RottenFleshId] = "At each new level, spawns 6 flies and 4 spiders#If you have less than 3 rotten hearts, give you one each new level#+1 luck"
-__eidItemDescriptions[DartsId] = "+0.2 speed, -2 FireDelay#Move fast !"
+__eidItemDescriptions[DartsId] = "+0.2 speed, -2 FireDelay#Move fast !#The faster you move, the more damage you do"
 __eidItemDescriptions[DivineGrailId] = "+2 Hearts#+5 damages, +0.2 speed, 0.5 shotspeed, +2 fire rate"
 __eidItemDescriptions[flyverterId] = "Convert one soulheart into 3 flies#Has a chance to spawn an item related to flies#If you alreay have the item that spawns, gives 10 flies instead"
 __eidItemDescriptions[CursedGrailId] = "Add a 1.5* damage multiplier, +1 damage, +2 fire rate and 0.25 shotspeed#When your tears hit an enemy or a wall, has a chance to create a red laser that will hit enemies"
@@ -544,15 +540,15 @@ function Additionals:onEvaluateItems(player,cacheFlag)
   --Give And Take
   if player:HasCollectible(GiveTakeID) then
     if cacheFlag == CacheFlag.CACHE_FIREDELAY then
-      player.MaxFireDelay = player.MaxFireDelay +0.75
+      player.MaxFireDelay = player.MaxFireDelay +0.50
       player.MaxFireDelay = player.MaxFireDelay - ( StatGT.AddFireDelay *0.25)
     end
     if cacheFlag == CacheFlag.CACHE_DAMAGE then
-      player.Damage = player.Damage -0.75
+      player.Damage = player.Damage -0.50
       player.Damage = player.Damage + ( StatGT.AddDamage *0.25)
     end
     if cacheFlag == CacheFlag.CACHE_SHOTSPEED then
-      player.ShotSpeed = player.ShotSpeed -0.3
+      player.ShotSpeed = player.ShotSpeed -0.2
       player.ShotSpeed = player.ShotSpeed + (StatGT.AddShotSpeed *0.1)
     end
     if cacheFlag == CacheFlag.CACHE_LUCK then
@@ -595,7 +591,6 @@ function Additionals:GiveBonus()
       player.ShotSpeed = player.ShotSpeed + 0.1
     end
     player:EvaluateItems()
-    --Isaac.ConsoleOutput("\nBonus done\n")
 
 end
 
@@ -625,7 +620,7 @@ local pos = Vector(player.Position.X,player.Position.Y)
           end
           player:StopExtraAnimation() 
           player:AnimateCollectible(RevengeId, "UseItem", "PlayerPickup")
-          player:AddSoulHearts(2)
+          player:AddSoulHearts(1)
           return false
         end
         return true

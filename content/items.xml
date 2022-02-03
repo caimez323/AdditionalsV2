@@ -1,11 +1,11 @@
 <items gfxroot="gfx/items/" version="1">
 	<passive  quality="2" cache="damage speed" name="Proteins" description="A little boost for you" maxhearts="2" hearts="99" gfx="proteins.png"/>
-	<passive  quality="3" quality="" cache="all" description="Confess yours sins ! Make a pact !" gfx="demon_ring.png" name="Demon Ring" devilprice="1" special="true"/>
+	<passive  quality="2" cache="all" description="Confess yours sins ! Make a pact !" gfx="demon_ring.png" name="Demon Ring" devilprice="1" special="true"/>
   <passive  quality="3" cache="luck speed" description ="A new beginning !" gfx="starter_pack.png" name ="Starter pack" maxhearts="2" hearts="99" soulhearts="2"/>
-  <passive  quality="3" description="ENOUGH !!!" gfx="Revenge.png" name="Revenge" />
+  <passive  quality="3" description="ENOUGH !!!" gfx="revenge.png" name="Revenge" />
   <passive  quality="2" cache="damage range firedelay" description ="Let's recolour the world !" gfx="squid_ink.png" name = "Squid Ink" />
   <passive  quality="2" cache="damage speed shotspeed" description ="Don't be afraid of them anymore" gfx="super_damages.png" name = "Super Damages" soulhearts="2" />
-  <passive  quality="2" description="Just a flower ?" name="White Flower" gfx="white_flower.png" hearts="99" soulhearts="8"/>
+  <passive  quality="3" description="Just a flower ?" name="White Flower" gfx="white_flower.png" hearts="99" soulhearts="8"/>
   <passive  quality="1" cache="luck" description="Rotten inside" name="Rotten Flesh" gfx="rotten_flesh.png" devilprice="1"/>
   <passive  quality="4" cache="damage shotspeed speed firedelay" description="I have the power of god on my side" name="Divine Grail" gfx="divine_grail.png" maxhearts="4" hearts="4" special="true"/>
   <passive  quality="4" cache="damage shotspeed firedelay" description="What have you done !" name="Cursed Grail" gfx="cursed_grail.png" devilprice="3" blackhearts = "2" special="true"/>
@@ -13,11 +13,11 @@
   <passive  quality="3" cache="damage shotspeed luck firedelay" description="High risk high reward" name="Give And Take" gfx="give_and_take.png" devilprice="1"/>
 	<familiar  quality="2" description="It's freezing !" gfx="Collectibles_frozen_body.png"  name="Frozen Body" cache ="familiars" soulhearts="2"/>
 	<familiar  quality="1" description="He's excited ! Bzzt !" gfx="Collectibles_laser_drone.png"  name="Laser Drone" cache ="familiars"/>
-	<active  quality="2" maxcharges ="5" description="Ice cube on demand" gfx="Freezy_Wind.png" name="Freezy Wind"/>
+	<active  quality="2" maxcharges ="4" description="Ice cube on demand" gfx="Freezy_Wind.png" name="Freezy Wind"/>
   <active  quality="2" maxcharges ="4" descritpion="FIRE !" gfx="matches.png" name="Matches" />
   <active  quality="1" maxcharges= "4" description="Suck their strength !" gfx="transfusion.png" name="Transfusion" devilprice="1"/>
   <active  quality="2" maxcharges ="5" description="The path to darkness opens !" gfx="hells_gate.png" name="Hell's Gate" devilprice="1"/>
   <active  quality="2" maxcharges ="0" description="My life is flies" gfx="flyverter.png" name="The Fly-verter" devilprice="1"/>
-  <active  quality="2" maxcharges="2" description="I saw a ghost ?" gfx="soul_stealer.png" name="Soul Stealer" />
+  <active  quality="2" maxcharges="2" description="Did I see a ghost ?" gfx="soul_stealer.png" name="Soul Stealer" />
  </items>
  
