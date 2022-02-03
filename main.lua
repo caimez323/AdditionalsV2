@@ -87,6 +87,34 @@ local StatGT = {
       AddShotSpeed = 0;
       AddLuck = 0
   }
+  
+  
+local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom") -- phantom entity
+local SoulStealerEntity = Isaac.GetEntityVariantByName("Soul Stealer") -- Soul Stealer entity
+local deleteNextTear = false
+local S_Stealer = {
+ Active = false,
+ Direction = Direction.NO_DIRECTION,
+ DirectionStart = 1,
+ EntityVariant = SoulStealerEntity,
+ Flame = nil,
+ Entity = nil,
+ Phantom = {
+   Damage = 1.5,
+   DamageCap = 10,
+   FireRate = 50,
+   FireRateCap = 10,
+   }
+}
+
+local PickupTail = {
+  [Direction.NO_DIRECTION] = "WalkDown",
+  [Direction.LEFT] = "WalkLeft",
+  [Direction.UP] = "WalkUp",
+  [Direction.RIGHT] = "WalkRight",
+  [Direction.DOWN] = "WalkDown",
+  
+  }
 
 
 --To spawn the customs cards, we look for a spawned card then add a chance to replace it
@@ -574,12 +602,6 @@ function Additionals:GiveBonus()
 
 end
 
---Make sure everything is allright to restart a new initalisation
-function Additionals:onExit()
-  DJrestart=false
-end
-Additionals:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT,Additionals.onExit)
-
 --This part detect if the player take a damage
 --If he has the item, add a chance to not take the damage (return false) and damage all enemies in room if the framecount between 2 damages was close
 
@@ -624,6 +646,9 @@ Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.onDamageReve
 
 
 function Additionals:OnDamage(entity, dmgAmount, dmgFlag, source, dmgCountDownFrames)
+  local player = Isaac.GetPlayer(0)
+  
+  --Dark Stars tear variant
   if source.Type == EntityType.ENTITY_TEAR and source.Variant == TearVariant.DARK_STARS then
       for _, entity in pairs(Isaac.GetRoomEntities()) do
           if entity.Type == EntityType.ENTITY_TEAR then
@@ -640,9 +665,57 @@ function Additionals:OnDamage(entity, dmgAmount, dmgFlag, source, dmgCountDownFr
       end
     end
   end
+  
+  --Darts
+  if player:HasCollectible(DartsId) then
+    if entity:IsVulnerableEnemy() and dmgFlag ~= DamageFlag.DAMAGE_CLONES and source.Type < 9 then
+        entity:TakeDamage(dmgAmount*math.max(math.abs(player.Velocity.X),math.abs(player.Velocity.Y))*0.25*0.25, DamageFlag.DAMAGE_CLONES, EntityRef(player),0);
+    end
+  end
+  
+  --Super Damages
+	if player:HasCollectible(SuperDamageId) then
+		if entity:IsVulnerableEnemy() and dmgFlag ~= DamageFlag.DAMAGE_CLONES and source.Type < 9 then
+			if (entity:ToNPC():IsBoss() and entity.SubType > 0) then
+				entity:TakeDamage(0.66*dmgAmount*2, DamageFlag.DAMAGE_CLONES, EntityRef(player), 0);
+			elseif(entity:ToNPC():IsBoss()) then
+        entity:TakeDamage(0.66*dmgAmount, DamageFlag.DAMAGE_CLONES, EntityRef(player), 0);
+      end
+		end
+	end
+
+
+  --Soul stealer
+  if S_Stealer.Flame ~= nil and source.Entity.Index == S_Stealer.Flame.Index then
+    S_Stealer.Flame:Remove()
+    S_Stealer.Flame = nil
+    
+    if entity.HitPoints <= 8 and entity.Type ~= EntityType.ENTITY_FIREPLACE then --the entity'll die of the fire
+      local phantoms = Isaac.FindByType(EntityType.ENTITY_FAMILIAR,PhantomFamiliar, 0)
+      if #phantoms < 1 then
+        phantom = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, PhantomFamiliar, 0, player.Position, Vector(0,0), player):ToFamiliar()
+        
+      else
+        upgradeEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.POOF02,0,phantom.Position,Vector(0,0),player):ToEffect()
+        effectColor = Color(1,1,1,1,0,0,0)
+        effectColor:SetColorize(0.2,0.1,0.8,1)
+        local effectSprite = upgradeEffect:GetSprite()
+        effectSprite.Color = effectColor
+        Additionals.Upgrade()
+      end
+    end
+    
+    entity:TakeDamage(8,0,EntityRef(player),dmgCountDownFrames) -- Normal damage
+    return false --Don't do initial damage
+    
+  elseif source.SpawnerVariant == PhantomFamiliar and source.Type == EntityType.ENTITY_TEAR and source.SpawnerType == EntityType.ENTITY_FAMILIAR then
+    --the target has been hitting by the phantom
+    entity:TakeDamage(S_Stealer.Phantom.Damage,0,EntityRef(player),dmgCountDownFrames) -- Normal damage
+    return false
+  end
 
 end
-Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.OnDamage)--]]
+Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.OnDamage)
 
 --Ophiuscus Transformation
 --Count the number of item for the transformation the player has
@@ -937,33 +1010,6 @@ end
 Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_flyverter, flyverterId)
 
 
-local PhantomFamiliar = Isaac.GetEntityVariantByName("Phantom") -- phantom entity
-local SoulStealerEntity = Isaac.GetEntityVariantByName("Soul Stealer") -- Soul Stealer entity
-local deleteNextTear = false
-local S_Stealer = {
- Active = false,
- Direction = Direction.NO_DIRECTION,
- DirectionStart = 1,
- EntityVariant = SoulStealerEntity,
- Flame = nil,
- Entity = nil,
- Phantom = {
-   Damage = 1.5,
-   DamageCap = 10,
-   FireRate = 50,
-   FireRateCap = 10,
-   }
-}
-
-local PickupTail = {
-  [Direction.NO_DIRECTION] = "WalkDown",
-  [Direction.LEFT] = "WalkLeft",
-  [Direction.UP] = "WalkUp",
-  [Direction.RIGHT] = "WalkRight",
-  [Direction.DOWN] = "WalkDown",
-  
-  }
-
 function Additionals:soul_stealer_update(player)
   
   if deleteNextTear then
@@ -1029,40 +1075,6 @@ end
 Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_soul_stealer, SoulStealerID)
 
 
-function Additionals:S_StealerOnDamage(target,dmg,flags,source,countdown)
-
-  local player = Isaac.GetPlayer(0)
-  if S_Stealer.Flame ~= nil and source.Entity.Index == S_Stealer.Flame.Index then
-    S_Stealer.Flame:Remove()
-    S_Stealer.Flame = nil
-    
-    if target.HitPoints <= 8 and target.Type ~= EntityType.ENTITY_FIREPLACE then --the entity'll die of the fire
-      local phantoms = Isaac.FindByType(EntityType.ENTITY_FAMILIAR,PhantomFamiliar, 0)
-      if #phantoms < 1 then
-        phantom = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, PhantomFamiliar, 0, player.Position, Vector(0,0), player):ToFamiliar()
-        
-      else
-        upgradeEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.POOF02,0,phantom.Position,Vector(0,0),player):ToEffect()
-        effectColor = Color(1,1,1,1,0,0,0)
-        effectColor:SetColorize(0.2,0.1,0.8,1)
-        local effectSprite = upgradeEffect:GetSprite()
-        effectSprite.Color = effectColor
-        Additionals.Upgrade()
-      end
-    end
-    
-    target:TakeDamage(8,0,EntityRef(player),countdown) -- Normal damage
-    return false --Don't do initial damage
-    
-  elseif source.SpawnerVariant == PhantomFamiliar and source.Type == EntityType.ENTITY_TEAR and source.SpawnerType == EntityType.ENTITY_FAMILIAR then
-    --the target has been hitting by the phantom
-    target:TakeDamage(S_Stealer.Phantom.Damage,0,EntityRef(player),countdown) -- Normal damage
-    return false
-  end
-  
-end
-Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG,Additionals.S_StealerOnDamage)
-
 function Additionals:Upgrade()
   
   
@@ -1118,27 +1130,6 @@ end
 Additionals:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE,Additionals.onPhantomUpdate, PhantomFamiliar)
 
 
-
-Additionals:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, entity, Amount, Flag, Source, Countdown)
-	local player = Isaac.GetPlayer(0);
-  
-  if player:HasCollectible(DartsId) then
-    if entity:IsVulnerableEnemy() and Flag ~= DamageFlag.DAMAGE_CLONES and Source.Type < 9 then
-        --entity:TakeDamage(0.25*0.25*Amount*(player.MoveSpeed), DamageFlag.DAMAGE_CLONES, EntityRef(player),0);
-        entity:TakeDamage(Amount*math.max(math.abs(player.Velocity.X),math.abs(player.Velocity.Y))*0.25*0.25, DamageFlag.DAMAGE_CLONES, EntityRef(player),0);
-    end
-  end
-  
-	if player:HasCollectible(SuperDamageId) then
-		if entity:IsVulnerableEnemy() and Flag ~= DamageFlag.DAMAGE_CLONES and Source.Type < 9 then
-			if (entity:ToNPC():IsBoss() and entity.SubType > 0) then
-				entity:TakeDamage(0.66*Amount*2, DamageFlag.DAMAGE_CLONES, EntityRef(player), 0);
-			elseif(entity:ToNPC():IsBoss()) then
-        entity:TakeDamage(0.66*Amount, DamageFlag.DAMAGE_CLONES, EntityRef(player), 0);
-      end
-		end
-	end
-end);
 
 function Additionals.Rotten_Spawn()
   local player = Isaac.GetPlayer(0)
