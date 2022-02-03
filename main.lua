@@ -576,12 +576,6 @@ function Additionals:onEvaluateItems(player,cacheFlag)
 end
 Additionals:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, Additionals.onEvaluateItems)
 
---This function is called each 0.5s and focus on the tearUpdate
-function Additionals:tearUpdate(player)
-    
-    
-end
-Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE,Additionals.tearUpdate)
 
 --Add a bonus with G&T
 function Additionals:GiveBonus()
