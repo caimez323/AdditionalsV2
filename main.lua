@@ -594,14 +594,15 @@ local pos = Vector(player.Position.X,player.Position.Y)
     elseif timeRevengeA ~=0 then
         timeRevengeB = player.FrameCount
     end
-
+    
     if ((timeRevengeB - timeRevengeA) <=75) then
         timeRevengeA=0
+        Isaac.ConsoleOutput("try")
         if math.random(1,2) ==1 then
           local entities = Isaac.GetRoomEntities()
           for i = 1, #entities do
             if(entities[i]:IsVulnerableEnemy()) then
-              entities[ i ]:TakeDamage(30, 0,player,0)
+              entities[ i ]:TakeDamage(30, 0,EntityRef(player),0)
             end
           end
           player:StopExtraAnimation() 
@@ -610,6 +611,8 @@ local pos = Vector(player.Position.X,player.Position.Y)
           return false
         end
         return true
+    else
+      timeRevengeA = player.FrameCount
     end
   end
   
