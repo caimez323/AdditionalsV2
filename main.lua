@@ -221,6 +221,141 @@ function Additionals:onUpdate(player)
       end
       TryFlyVerter = false
   end
+  
+  
+  local room = Game():GetRoom()
+    
+    if AtLeastOne and GTNoDMG and room:GetAliveEnemiesCount() == 0 and player:HasCollectible(GiveTakeID) then --When we clear a room
+        --Chance to give bonus
+        local limStage = game:GetLevel():GetStage()+1 
+        if limStage%2 == 1 then
+          limStage = limStage -1
+        end
+        limStage = 7- (limStage/2)
+        if math.random(1,limStage) == 1 then 
+          Additionals:GiveBonus()
+        end
+      AtLeastOne = false
+      
+      if BossRoom then
+        Additionals:GiveBonus()
+        Additionals:GiveBonus()
+        BossRoom = false
+      end
+    end
+    
+    local vel = Vector(0,0)
+    local player = Isaac.GetPlayer(0)
+    local pos = Vector(player.Position.X,player.Position.Y)
+    local ChanceB = 5
+    local MaxLuck =11
+    
+    --SQUID INK
+    --We check the item then the entities in the room, then if it's a tear and if it collide with something
+    if(player:HasCollectible(InkId)) then
+        for _, entity in pairs(Isaac.GetRoomEntities()) do
+          if entity.Type == EntityType.ENTITY_TEAR then
+            local TearData = entity:GetData()
+            local Tear = entity:ToTear()
+            Tear.FallingAcceleration = 0.02 + -0.02 * rangeBoost
+            if(Tear.Height >=-5 or Tear:CollidesWithGrid()) and TearData.Ink == nil then
+              local roll = math.random(0,100)
+              if (roll <=((100-ChanceB) * player.Luck /MaxLuck + ChanceB)) then
+                local roll2 = math.random(0,92)
+                if(roll2 >=0 and roll2 <=19) then
+              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_WHITE,0, Tear.Position, vel,player):ToEffect() --20
+                elseif(roll2 >=20 and roll2 <=39) then
+              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_BLACK,0, Tear.Position, vel,player):ToEffect() --20
+                elseif(roll2 >=40 and roll2 <=59) then
+              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED,0, Tear.Position, vel,player):ToEffect() --20
+                elseif(roll2 >=60 and roll2 <=79) then
+              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_GREEN,0, Tear.Position, vel,player):ToEffect() --20
+                elseif(roll2 >=80 and roll2 <=83) then
+              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_LEMON_MISHAP,0, Tear.Position, vel,player):ToEffect()-- F 4
+                elseif(roll2 >=84 and roll2 <=87) then
+              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_HOLYWATER,0, Tear.Position, vel,player):ToEffect()-- F 4
+                elseif(roll2 >=88 and roll2 <=91) then
+              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_PUDDLE_MILK,0, Tear.Position, vel,player):ToEffect()--F 4
+                elseif(roll2==92) then
+              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_LEMON_PARTY,0, Tear.Position, vel,player):ToEffect()--FF 1
+                end
+              end
+            end
+          end
+        end
+    end
+    
+    --MATCHES
+    if player:HasCollectible(MatchesId) then
+      FlameTimeB=player.FrameCount 
+      if(FlameTimeB-FlameTimeA<300)then
+        for _, entity in pairs(Isaac.GetRoomEntities()) do
+          if entity.Type == EntityType.ENTITY_TEAR then
+            local Matches_Tear = entity:ToTear()
+            Matches_Tear.TearFlags = TearFlags.TEAR_BURN
+          end
+        end
+      end
+    end
+    
+    --Divine Grail
+    if player:HasCollectible(DivineGrailId) and not(player:HasCollectible(CursedGrailId)) then
+      for _, entity in pairs(Isaac.GetRoomEntities()) do
+        if entity.Type == EntityType.ENTITY_TEAR and entity.SpawnerType == EntityType.ENTITY_PLAYER then
+          local tear = entity:ToTear()
+          if entity.Variant~=TearVariant.STARS then
+            tear:ChangeVariant(TearVariant.STARS)
+            tear:SetSize(tear.Size, Vector(1.2,1.2), 8)
+            tear.SpriteScale = tear.SpriteScale * 1.2
+          end
+        end
+      end
+    end
+    
+    --Cursed Grail
+    if player:HasCollectible(CursedGrailId) and not(player:HasCollectible(DivineGrailId)) then
+      for _, entity in pairs(Isaac.GetRoomEntities()) do
+        if entity.Type == EntityType.ENTITY_TEAR and entity.SpawnerType == EntityType.ENTITY_PLAYER then
+          local tear = entity:ToTear()
+          if entity.Variant~=TearVariant.DARK_STARS then
+            tear:ChangeVariant(TearVariant.DARK_STARS)
+            tear:SetSize(tear.Size, Vector(1.2,1.2), 8)
+            tear.SpriteScale = tear.SpriteScale * 1.2
+          end
+        end
+      end
+      for _, entity in pairs(Isaac.GetRoomEntities()) do
+        if entity.Type == EntityType.ENTITY_TEAR then
+          local TearData = entity:GetData()
+          local tear = entity:ToTear()
+          if(tear.Height >=-5 or tear:CollidesWithGrid()) and TearData.Cursed_Grail == nil and entity.SpawnerType == EntityType.ENTITY_PLAYER then
+            --if math.random(0,2) == 0 then
+              local enemiesRad = Isaac.FindInRadius(tear.Position,120,EntityPartition.ENEMY)
+              if #enemiesRad>0 then
+                local enemy1pos = enemiesRad[1].Position
+                local laser = EntityLaser.ShootAngle(2,tear.Position,(enemy1pos-tear.Position):GetAngleDegrees(),1,Vector(0,0),player)
+                laser.CollisionDamage = player.Damage * 0.3 *0.5
+              --end
+            end
+          end
+        end
+      end
+    end
+    --Doom Stars
+    if player:HasCollectible(DivineGrailId) and player:HasCollectible(CursedGrailId) then
+      for _, entity in pairs(Isaac.GetRoomEntities()) do
+        if entity.Type == EntityType.ENTITY_TEAR and entity.SpawnerType == EntityType.ENTITY_PLAYER then
+          local tear = entity:ToTear()
+          if entity.Variant~=TearVariant.DOOM_STARS then
+            tear:ChangeVariant(TearVariant.DOOM_STARS)
+            tear:SetSize(tear.Size, Vector(1.2,1.2), 6)
+            tear.SpriteScale = tear.SpriteScale * 1
+          end
+        end
+      end
+    end
+  
+  
 end
 Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, Additionals.onUpdate)
 
@@ -443,139 +578,7 @@ Additionals:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, Additionals.onEvaluateIt
 
 --This function is called each 0.5s and focus on the tearUpdate
 function Additionals:tearUpdate(player)
-    local room = Game():GetRoom()
     
-    if AtLeastOne and GTNoDMG and room:GetAliveEnemiesCount() == 0 and player:HasCollectible(GiveTakeID) then --When we clear a room
-        --Chance to give bonus
-        local limStage = game:GetLevel():GetStage()+1 
-        if limStage%2 == 1 then
-          limStage = limStage -1
-        end
-        limStage = 7- (limStage/2)
-        if math.random(1,limStage) == 1 then 
-          Additionals:GiveBonus()
-        end
-      AtLeastOne = false
-      
-      if BossRoom then
-        Additionals:GiveBonus()
-        Additionals:GiveBonus()
-        BossRoom = false
-      end
-    end
-    
-    local vel = Vector(0,0)
-    local player = Isaac.GetPlayer(0)
-    local pos = Vector(player.Position.X,player.Position.Y)
-    local ChanceB = 5
-    local MaxLuck =11
-    
-    --SQUID INK
-    --We check the item then the entities in the room, then if it's a tear and if it collide with something
-    if(player:HasCollectible(InkId)) then
-        for _, entity in pairs(Isaac.GetRoomEntities()) do
-          if entity.Type == EntityType.ENTITY_TEAR then
-            local TearData = entity:GetData()
-            local Tear = entity:ToTear()
-            Tear.FallingAcceleration = 0.02 + -0.02 * rangeBoost
-            if(Tear.Height >=-5 or Tear:CollidesWithGrid()) and TearData.Ink == nil then
-              local roll = math.random(0,100)
-              if (roll <=((100-ChanceB) * player.Luck /MaxLuck + ChanceB)) then
-                local roll2 = math.random(0,92)
-                if(roll2 >=0 and roll2 <=19) then
-              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_WHITE,0, Tear.Position, vel,player):ToEffect() --20
-                elseif(roll2 >=20 and roll2 <=39) then
-              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_BLACK,0, Tear.Position, vel,player):ToEffect() --20
-                elseif(roll2 >=40 and roll2 <=59) then
-              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED,0, Tear.Position, vel,player):ToEffect() --20
-                elseif(roll2 >=60 and roll2 <=79) then
-              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_GREEN,0, Tear.Position, vel,player):ToEffect() --20
-                elseif(roll2 >=80 and roll2 <=83) then
-              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_LEMON_MISHAP,0, Tear.Position, vel,player):ToEffect()-- F 4
-                elseif(roll2 >=84 and roll2 <=87) then
-              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_HOLYWATER,0, Tear.Position, vel,player):ToEffect()-- F 4
-                elseif(roll2 >=88 and roll2 <=91) then
-              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_PUDDLE_MILK,0, Tear.Position, vel,player):ToEffect()--F 4
-                elseif(roll2==92) then
-              Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_LEMON_PARTY,0, Tear.Position, vel,player):ToEffect()--FF 1
-                end
-              end
-            end
-          end
-        end
-    end
-    
-    --MATCHES
-    if player:HasCollectible(MatchesId) then
-      FlameTimeB=player.FrameCount 
-      if(FlameTimeB-FlameTimeA<300)then
-        for _, entity in pairs(Isaac.GetRoomEntities()) do
-          if entity.Type == EntityType.ENTITY_TEAR then
-            local Matches_Tear = entity:ToTear()
-            Matches_Tear.TearFlags = TearFlags.TEAR_BURN
-          end
-        end
-      end
-    end
-    
-    --Divine Grail
-    if player:HasCollectible(DivineGrailId) and not(player:HasCollectible(CursedGrailId)) then
-      for _, entity in pairs(Isaac.GetRoomEntities()) do
-        if entity.Type == EntityType.ENTITY_TEAR and entity.SpawnerType == EntityType.ENTITY_PLAYER then
-          local tear = entity:ToTear()
-          if entity.Variant~=TearVariant.STARS then
-            tear:ChangeVariant(TearVariant.STARS)
-            tear:SetSize(tear.Size, Vector(1.2,1.2), 8)
-            tear.SpriteScale = tear.SpriteScale * 1.2
-          end
-        end
-      end
-    end
-    
-    --Cursed Grail
-    if player:HasCollectible(CursedGrailId) and not(player:HasCollectible(DivineGrailId)) then
-      for _, entity in pairs(Isaac.GetRoomEntities()) do
-        if entity.Type == EntityType.ENTITY_TEAR and entity.SpawnerType == EntityType.ENTITY_PLAYER then
-          local tear = entity:ToTear()
-          if entity.Variant~=TearVariant.DARK_STARS then
-            tear:ChangeVariant(TearVariant.DARK_STARS)
-            tear:SetSize(tear.Size, Vector(1.2,1.2), 8)
-            tear.SpriteScale = tear.SpriteScale * 1.2
-          end
-        end
-      end
-      --player:FireTechLaser(pos, LaserOffset.LASER_MOMS_EYE_OFFSET, Vector(0,0),0,0)
-      for _, entity in pairs(Isaac.GetRoomEntities()) do
-        if entity.Type == EntityType.ENTITY_TEAR then
-          local TearData = entity:GetData()
-          local tear = entity:ToTear()
-          if(tear.Height >=-5 or tear:CollidesWithGrid()) and TearData.Cursed_Grail == nil and entity.SpawnerType == EntityType.ENTITY_PLAYER then
-            --if math.random(0,2) == 0 then
-              local enemiesRad = Isaac.FindInRadius(tear.Position,120,EntityPartition.ENEMY)
-              if #enemiesRad>0 then
-                local enemy1pos = enemiesRad[1].Position
-                --player:FireTechLaser(pos, LaserOffset.LASER_MOMS_EYE_OFFSET, enemy1pos-pos,0,0)
-                local laser = EntityLaser.ShootAngle(2,tear.Position,(enemy1pos-tear.Position):GetAngleDegrees(),1,Vector(0,0),player)
-                laser.CollisionDamage = player.Damage * 0.3 *0.5
-              --end
-            end
-          end
-        end
-      end
-    end
-    --Doom Stars
-    if player:HasCollectible(DivineGrailId) and player:HasCollectible(CursedGrailId) then
-      for _, entity in pairs(Isaac.GetRoomEntities()) do
-        if entity.Type == EntityType.ENTITY_TEAR and entity.SpawnerType == EntityType.ENTITY_PLAYER then
-          local tear = entity:ToTear()
-          if entity.Variant~=TearVariant.DOOM_STARS then
-            tear:ChangeVariant(TearVariant.DOOM_STARS)
-            tear:SetSize(tear.Size, Vector(1.2,1.2), 6)
-            tear.SpriteScale = tear.SpriteScale * 1
-          end
-        end
-      end
-    end
     
 end
 Additionals:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE,Additionals.tearUpdate)
