@@ -207,7 +207,7 @@ if not __eidItemDescriptions then
   __eidItemDescriptions = {}
 end
 --Part is to make the mod compatible with eid
-__eidItemDescriptions[Proteins] = "Hp up, +0.2 speed +2 damages#Charge your item twice"
+__eidItemDescriptions[Proteins] = "Hp up, +0.1 speed +1 damage#Heal you#Charge up your item"
 __eidItemDescriptions[DemonRingId] = "All devil deals are now Angel rooms"
 __eidItemDescriptions[FrozenItemId] = "Spawns a familiar that slows enemies#Gives 2 soulhearts"
 __eidItemDescriptions[StarterPackId] = "Gives 10 coins, gold bomb, gold key, an HP up, a soulheart and +1 luck and +0.2 speed"
@@ -244,16 +244,16 @@ function Additionals:onEvaluateItems(player,cacheFlag)
 --PROTEINS
     if player:HasCollectible(Proteins)then
       if cacheFlag==CacheFlag.CACHE_DAMAGE then
-        player.Damage = player.Damage +2;
+        player.Damage = player.Damage +1;
       end
       if cacheFlag == CacheFlag.CACHE_SPEED then 
-          player.MoveSpeed = player.MoveSpeed +0.2;
+          player.MoveSpeed = player.MoveSpeed +0.1;
       end
       if not(AlreadyProteins) then
         --Make some effects
           Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.BLOOD_PARTICLE,0, player.Position,Vector(0,0),player)
           Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.BLOOD_PARTICLE,0, player.Position,Vector(0,0),player)
-          player:SetActiveCharge(999)
+          player:FullCharge()
           AlreadyProteins =true
       end
     end
