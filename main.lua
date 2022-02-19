@@ -533,9 +533,6 @@ function Additionals:onEvaluateItems(player,cacheFlag)
         Zodiac.ToBeStat = true
       end
     end
-    if cacheFlag == CacheFlag.CACHE_FLYING then
-      
-    end
     
   --Give And Take
   if player:HasCollectible(GiveTakeID) then
