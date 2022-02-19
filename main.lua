@@ -1011,10 +1011,11 @@ function Additionals:soul_stealer_update(player)
   
   if deleteNextTear then
    --Delete next tear
+   
       local entities = Isaac.FindInRadius(player.Position,10)
       local deletedTear = false
       for i =1, #entities do
-        if entities[i].Type == EntityType.ENTITY_TEAR and not deletedTear then
+        if entities[i].Type == EntityType.ENTITY_TEAR and entities[i].SpawnerType==Isaac.GetPlayer(0).Type and not deletedTear then
           entities[i]:Remove()
           deletedTear = true
           deleteNextTear = false
