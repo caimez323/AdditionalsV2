@@ -74,9 +74,9 @@ DIRECTION_FLOAT_ANIM = {
 
 DIRECTION_SHOOT_ANIM = {
 	[Direction.NO_DIRECTION] = "FloatShootDown",
-	[Direction.LEFT] = "FloatShootRight",
+	[Direction.LEFT] = "FloatShootLeft",
 	[Direction.UP] = "FloatShootUp",
-	[Direction.RIGHT] = "FloatShootLeft",
+	[Direction.RIGHT] = "FloatShootRight",
 	[Direction.DOWN] = "FloatShootDown"
 }
 
