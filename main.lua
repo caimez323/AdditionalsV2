@@ -1,9 +1,9 @@
 --[[
     Hey ! thanks for downloading my mod
-    I hope you had/will have fun with it
+    I hope you had/will have fun with this version
     Feel free to check the code here
     I added some commentary to help
-    But it's a disaster so good luck !
+    AdditionalsV2 is not compatible with V1
     Mod made by caimez_
 --]]
 
