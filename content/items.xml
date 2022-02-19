@@ -6,7 +6,7 @@
   <passive  quality="2" cache="damage range firedelay" description ="Let's recolour the world !" gfx="squid_ink.png" name = "Squid Ink" />
   <passive  quality="2" cache="damage speed shotspeed" description ="Don't be afraid of them anymore" gfx="super_damages.png" name = "Super Damages" soulhearts="2" />
   <passive  quality="3" description="Just a flower ?" name="White Flower" gfx="white_flower.png" hearts="99" soulhearts="8"/>
-  <passive  quality="1" cache="luck" description="Rotten inside" name="Rotten Flesh" gfx="rotten_flesh.png" devilprice="1"/>
+  <passive  quality="1" cache="luck" description="It's rotten inside" name="Rotten Flesh" gfx="rotten_flesh.png" devilprice="1"/>
   <passive  quality="4" cache="damage shotspeed speed firedelay" description="I have the power of god on my side" name="Divine Grail" gfx="divine_grail.png" maxhearts="4" hearts="4" special="true"/>
   <passive  quality="4" cache="damage shotspeed firedelay" description="What have you done !" name="Cursed Grail" gfx="cursed_grail.png" devilprice="3" blackhearts = "2" special="true"/>
   <passive  quality="2" cache="speed firedelay" description="I want to be the fast !" name="Darts" gfx="darts.png"/>
