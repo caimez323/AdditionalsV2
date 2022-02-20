@@ -1,8 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<name>AdditionalsV2</name>
-	<directory>additionals_2395495824</directory>
-	<description/>
-	<version>1.0</version>
-	<visibility/>
+    <name>AdditionalsV2</name>
+    <directory>additionalsv2</directory>
+    <id>0</id>
+    <description></description>
+    <version>1.0</version>
+    <visibility>Public</visibility>
+    <tag id="Lua"/>
+    <tag id="Items"/>
+    <tag id="Active Items"/>
+    <tag id="Cards"/>
+    <tag id="Familiars"/>
+    <tag id="Babies"/>
+    <tag id="Graphics"/>
 </metadata>
-
