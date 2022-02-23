@@ -2,10 +2,60 @@
 <metadata>
     <name>AdditionalsV2</name>
     <directory>additionalsv2</directory>
-    <id>0</id>
-    <description></description>
-    <version>1.0</version>
-    <visibility>Public</visibility>
+    <id>2760011678</id>
+    <description>[h1][b]THIS VERSION IS ONLY COMPATIBLE WITH REPENTANCE AND YOU NEED TO DISABLE THE V1 OF ADDITIONALS[/b][/h1]
+
+[h2]If you play only with AfterBirth+, check the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2395495824] V1 of Additionals [/url][/h2] 
+
+[b]Finally ![/b]
+
+After all this time the mod is finally completed !
+This version change a lot of things compared to the V1 !
+There are [b]10[/b] new items and a [b]new transformation[/b] !
+
+This version add a lot of new item, an item removed, transformation and more.
+The mod is still compatible with EID, but if you want to check the old item, you can check the V1 and all the changes are listed below.
+I tried to fix and balance everything that wasn't good enough in V1, hope you'll enjoy !
+
+[b]All the changes are :[/b]
+
+[b]Add qualities ![/b]
+
+[u]Removed :[/u]
+• Not-Glass Cannon: removed
+
+[u]New Items :[/u]
+• Hell's Gate: Spawns a demon-boss ally for the room
+• Super Damage : Add damage, speed, shot-Speed up and half a soulheart. Deal bonus damages against bosses (even more if champions)
+• Darts : Add speed and reduce fire delay. The faster you move, the more damage you do
+• Give and Take : Stats down but each time you clear a room without taking damage, has a chance to give you a stat up
+• Laser drone : Spawns a familiar that bounces and shoots lasers. Its damage, speed, and fire rate are based on the number of pickups in the room
+• Soul Stealer : Shoot a fire that deal damage to enemies. If it kills the enemy, add a special familiar that can be upgraded
+• Divine Grail : A huge stats up
+• Cursed Grail : Add a damage multiplier and stats. When your tears hit an enemy or a wall, has a chance to create a laser that will hit enemies
+• Add the Transformation &quot;Grail&quot; when you get both grail
+• Fly-verter : Convert one soulheart into 3 flies.Has a chance to spawn an item related to flies
+• Rotten Flesh : At each new level, spawns 6 flies and 4 spiders.If you have less than 3 rotten hearts, give you one each new level
+[u]Nerf/Buff :[/u]
+• Demon Ring : Devil Price: 2 -&gt; 1
+• Improve the follow of Frozen Body
+• Proteins : Damage 2-&gt;1, Speed 0.2 -&gt;0.1, Do not spawn a battery anymore
+• Add a transformation message for Ophiuscus
+• Squid Ink now give damage and fire delay
+• Revenge: Now give half a soul heart on trigger
+• Ophiuscus : Don't give fly anymore, don't give bloody crown anymore
+
+[u]Fixes :[/u]
+• Revenge : Fix animation and maths bug
+• Frozen Body : Add animations, Soulhearts : 3 -&gt; 1
+• Ophiuscus :  Add costume and a new effect (TP planetarium)
+• Familiars : Fix glitch and duplication bugs
+[i]If an item/card is not mentioned here, it hasn't changed[/i]
+
+[u]The code has been made by caimez
+All sprites have been made by caimez and Luxtro39[/u]</description>
+    <version>1.1</version>
+    <visibility>Friends Only</visibility>
     <tag id="Lua"/>
     <tag id="Items"/>
     <tag id="Active Items"/>
