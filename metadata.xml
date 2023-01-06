@@ -54,8 +54,8 @@ I tried to fix and balance everything that wasn't good enough in V1, hope you'll
 
 [u]The code has been made by caimez
 All sprites have been made by caimez and Luxtro39[/u]</description>
-    <version>1.1</version>
-    <visibility>Friends Only</visibility>
+    <version>1.4</version>
+    <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Items"/>
     <tag id="Active Items"/>

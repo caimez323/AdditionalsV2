@@ -172,7 +172,7 @@ function Additionals:onUpdate(player)
     GTNoDMG = true
     BossRoom = false
     
-    rangeBoost=0 --Change range with Squid ink
+    --rangeBoost=0 --Change range with Squid ink
     
     timeRevengeA = 0 --Revenge
     timeRevengeB = 0
@@ -371,7 +371,7 @@ __eidItemDescriptions[FrozenItemId] = "Spawns a familiar that slows enemies#Give
 __eidItemDescriptions[StarterPackId] = "Gives 10 coins, gold bomb, gold key, HP up, +1 soulheart and +1 luck and +0.2 speed"
 __eidItemDescriptions[RevengeId] = "Has a chance to damage all enemies in the room when taking a lot of damage and add half soulheart"
 __eidItemDescriptions[TransfusionId] = "More enemies, More stats !#+1 damage for each enemy in the room"
-__eidItemDescriptions[InkId] = "+0.75 damage, +2 fire rate, range down#Has a chance to create creep under your tears"
+__eidItemDescriptions[InkId] = "+0.5 damage, +1 fire rate#Has a chance to create creep under your tears"
 __eidItemDescriptions[FlowerId] = "+4 soulhearts"
 __eidItemDescriptions[MatchesId] = "Burns all enemies#Your tears and your familiars' burn enemies"
 __eidItemDescriptions[GateId] = "Spawns a demon-boss ally for the room"
@@ -475,11 +475,11 @@ function Additionals:onEvaluateItems(player,cacheFlag)
           player.Damage = player.Damage+0.5
       end
       if cacheFlag == CacheFlag.CACHE_FIREDELAY then
-          player.MaxFireDelay = player.MaxFireDelay-1.5
+          player.MaxFireDelay = player.MaxFireDelay-1
       end
-      if cacheFlag == CacheFlag.CACHE_RANGE then
+      --[[if cacheFlag == CacheFlag.CACHE_RANGE then
           rangeBoost = rangeBoost -5
-      end
+      end--]]
     end
     
 --Divine Grail
@@ -573,7 +573,7 @@ Additionals:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, Additionals.onEvaluateIt
 --Add a bonus with G&T
 function Additionals:GiveBonus()
   local player = Isaac.GetPlayer(0)
-    local GTAddPointRNG = math.random(0,3)
+  local GTAddPointRNG = math.random(0,3)
     if GTAddPointRNG == 0 then
       StatGT.AddDamage = StatGT.AddDamage+1
       player.Damage = player.Damage + 0.25
