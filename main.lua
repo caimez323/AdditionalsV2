@@ -257,7 +257,7 @@ function Additionals:onUpdate(player)
           if entity.Type == EntityType.ENTITY_TEAR then
             local TearData = entity:GetData()
             local Tear = entity:ToTear()
-            Tear.FallingAcceleration = 0.02 + -0.02 * rangeBoost
+            Tear.FallingAcceleration = 0.02 --+ -0.02 * rangeBoost
             if(Tear.Height >=-5 or Tear:CollidesWithGrid()) and TearData.Ink == nil then
               local roll = math.random(0,100)
               if (roll <=((100-ChanceB) * player.Luck /MaxLuck + ChanceB)) then
