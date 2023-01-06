@@ -690,7 +690,7 @@ function Additionals:OnDamage(entity, dmgAmount, dmgFlag, source, dmgCountDownFr
         effectColor:SetColorize(0.2,0.1,0.8,1)
         local effectSprite = upgradeEffect:GetSprite()
         effectSprite.Color = effectColor
-        Additionals.Upgrade()
+        Additionals.UpgradePhantom()
       end
     end
     
@@ -1070,9 +1070,7 @@ end
 Additionals:AddCallback(ModCallbacks.MC_USE_ITEM,Additionals.use_soul_stealer, SoulStealerID)
 
 
-function Additionals:Upgrade()
-  
-  
+function Additionals:UpgradePhantom()
   if (math.random(0,1) == 0) then 
     if S_Stealer.Phantom.Damage+1 <= S_Stealer.Phantom.DamageCap then
       S_Stealer.Phantom.Damage = S_Stealer.Phantom.Damage +1
